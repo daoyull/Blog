@@ -1,0 +1,122 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:BlogView.Controls"
+                    xmlns:converts="clr-namespace:AvaloniaBlog.Lib.Converts;assembly=AvaloniaBlog.Lib"
+                    xmlns:ic="clr-namespace:AvaloniaBlog.Lib.Controls;assembly=AvaloniaBlog.Lib"
+                    xmlns:models="clr-namespace:Blog.Lib.Models;assembly=Blog.Lib"
+                    xmlns:avalonia="clr-namespace:Markdig.Avalonia;assembly=Markdig.Avalonia">
+    <Design.PreviewWith>
+        <StackPanel Margin="20" Width="800">
+
+        </StackPanel>
+    </Design.PreviewWith>
+    <converts:DateTimeConvert x:Key="BlogDateConvert" />
+
+
+    <ControlTheme x:Key="{x:Type controls:BlogCardItem}" TargetType="controls:BlogCardItem">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Padding="20"
+                        Classes="Card Hover" Margin="15 0 15 30">
+                    <Grid RowDefinitions="50,35,30,*,30,*,40">
+                        <Button Grid.Row="0" Theme="{DynamicResource NullButton}"
+                                Command="{TemplateBinding ReadCommand}">
+                            <Label Classes="BlogTitle" Content="{TemplateBinding Title}" />
+                        </Button>
+                        <Grid Grid.Row="1" Margin="0 0 0 10">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock ic:Iconfont.Icon="Date" VerticalAlignment="Center"
+                                           Foreground="#00A7E0" />
+                                <Label Margin="2 0 10 0" VerticalAlignment="Center"
+                                       Foreground="#00A7E0"
+                                       Content="{TemplateBinding CreateTime,Converter={StaticResource BlogDateConvert},ConverterParameter='yyyy-MM-dd',Mode=OneWay}">
+                                </Label>
+                                <TextBlock ic:Iconfont.Icon="Views" VerticalAlignment="Center"
+                                           Foreground="#FF3F1F" />
+                                <Label VerticalAlignment="Center" Margin="2 0 10 0"
+                                       Foreground="#FF3F1F"
+                                       Content="{TemplateBinding Views}">
+                                </Label>
+                                <TextBlock ic:Iconfont.Icon="Pen" VerticalAlignment="Center" />
+                                <Label VerticalAlignment="Center" Margin="2 0 0 0" Content="字数≈"></Label>
+                                <Label VerticalAlignment="Center" Content="{TemplateBinding Words}"></Label>
+                                <Label VerticalAlignment="Center" Margin="0 0 10 0" Content="字"></Label>
+                                <TextBlock ic:Iconfont.Icon="Timepiece" VerticalAlignment="Center" />
+                                <Label VerticalAlignment="Center" Margin="2 0 0 0" Content="阅读时间≈"></Label>
+                                <Label VerticalAlignment="Center" Content="{TemplateBinding ReadTime}"></Label>
+                                <Label VerticalAlignment="Center" Margin="0 0 10 0" Content="分钟"></Label>
+                            </StackPanel>
+                        </Grid>
+                        <!-- 高度30 -->
+                        <Panel x:Name="CategoryPanel" Name="{x:Static controls:BlogCardItem.PART_CategoryColor}"
+                               Grid.Row="2" Margin="-35 0 0 0"
+                               HorizontalAlignment="Left">
+                            <Panel.Styles>
+                                <Style Selector="Panel">
+                                    <Style Selector="^:pointerover">
+                                        <Setter Property="Cursor" Value="Hand" />
+                                    </Style>
+                                </Style>
+                            </Panel.Styles>
+                            <Path x:Name="Path"
+                                  Fill="{Binding #CategoryPanel.Background}"
+                                  Data="m0,30 l15,0 l0,15 l0,0z" />
+                            <TextBlock ic:Iconfont.Icon="Folder" Foreground="White" HorizontalAlignment="Left"
+                                       Margin="10 8 0 0">
+                            </TextBlock>
+                            <Label Margin="30 0 10 0" VerticalAlignment="Center" HorizontalAlignment="Right"
+                                   Foreground="White" Content="{Binding #CategoryPanel.Tag}" />
+                        </Panel>
+
+
+                        <avalonia:MarkView Grid.Row="3" Margin="10 20 10 20" Text="{TemplateBinding Description}" />
+
+                        <Border Grid.Row="4" Margin="0 10 0 0">
+                            <Button Theme="{DynamicResource Gradation}" Command="{TemplateBinding ReadCommand}"
+                                    Content="阅读全文" />
+                        </Border>
+                        <Border Grid.Row="5" Height="1" Background="LightGray" Margin="10 30 10 20"></Border>
+                        <ItemsControl Grid.Row="6" ItemsSource="{TemplateBinding Tags}" Name="">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal"></WrapPanel>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="models:TagCacheVo">
+                                    <controls:TagItem
+                                        Id="{Binding Id}"
+                                        TagName="{Binding TagName}" Margin="5 0 5 0"
+                                        TagColor="{Binding TagColor}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^ /template/Label.BlogTitle">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontSize" Value="22" />
+
+            <Style Selector="^:pointerover">
+                <Setter Property="Cursor" Value="Hand"></Setter>
+                <Setter Property="FontSize" Value="24"></Setter>
+                <Style.Animations>
+                    <Animation Duration="0:0:0.1">
+                        <KeyFrame Cue="0%">
+                            <Setter Property="FontSize" Value="22" />
+                        </KeyFrame>
+                        <KeyFrame Cue="100%">
+                            <Setter Property="FontSize" Value="24" />
+                        </KeyFrame>
+                    </Animation>
+                </Style.Animations>
+
+            </Style>
+        </Style>
+    </ControlTheme>
+</ResourceDictionary>

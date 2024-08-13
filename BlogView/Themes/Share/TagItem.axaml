@@ -1,0 +1,56 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:blog="clr-namespace:BlogView.Controls"
+                    xmlns:converts="clr-namespace:AvaloniaBlog.Lib.Converts;assembly=AvaloniaBlog.Lib">
+    <Design.PreviewWith>
+        <StackPanel Margin="20">
+            <blog:TagItem TagName="Vue" TagColor="#21BA45" />
+        </StackPanel>
+    </Design.PreviewWith>
+    <converts:DateTimeConvert x:Key="DateConvert" />
+    <converts:ColorAlphaConvert x:Key="ColorAlphaConvert" />
+
+
+    <ControlTheme x:Key="{x:Type blog:TagItem}" TargetType="blog:TagItem">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Button x:Name="TagItemBorder"
+                        Theme="{StaticResource NullButton}"
+                        Background="{TemplateBinding TagColor}"
+                        Command="{TemplateBinding Command}"
+                        CommandParameter="{TemplateBinding Id}"
+                        CornerRadius="4"
+                        Height="26">
+                    <StackPanel Orientation="Horizontal">
+                        <Panel x:Name="Panel1" Width="13">
+                            <Path Data="m13,0 l-13,0 l0,13 l0,0z m-13,26 l13,0 l-13,-13 l0,0z" Fill="White"
+                                  Width="{Binding #Panel1.Width}">
+                                <Path.Styles>
+                                    <Style Selector="Path">
+                                        <Style Selector="^:pointerover">
+                                            <Setter Property="Cursor" Value="Arrow" />
+                                        </Style>
+                                    </Style>
+                                </Path.Styles>
+                            </Path>
+                            <Ellipse Width="6" Height="6" Margin="10 0 0 0" Fill="White" />
+                        </Panel>
+                        <Label FontSize="14" Foreground="White" Margin="15 0 20 0" Content="{TemplateBinding TagName}"
+                               VerticalAlignment="Center">
+                        </Label>
+                    </StackPanel>
+                </Button>
+            </ControlTemplate>
+        </Setter>
+
+        <Style Selector="^ /template/ Button#TagItemBorder">
+            <Style Selector="^:pointerover">
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Background"
+                        Value="{Binding $self.Background,Converter={StaticResource ColorAlphaConvert},
+                ConverterParameter=200}" />
+            </Style>
+        </Style>
+
+    </ControlTheme>
+</ResourceDictionary>

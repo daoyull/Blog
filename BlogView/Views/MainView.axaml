@@ -1,0 +1,104 @@
+<abstracts:UserComponent x:TypeArguments="viewModels:MainViewModel" xmlns="https://github.com/avaloniaui"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:abstracts="clr-namespace:Common.Avalonia.Abstracts;assembly=Common.Avalonia"
+                         xmlns:viewModels="clr-namespace:BlogView.ViewModels"
+                         xmlns:components="clr-namespace:BlogView.Components"
+                         xmlns:views="clr-namespace:BlogView.Views"
+                         xmlns:blogView="clr-namespace:BlogView"
+                         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                         x:Class="BlogView.Views.MainView">
+    <Design.DataContext>
+        <viewModels:MainViewModel />
+    </Design.DataContext>
+    <UserControl.Styles>
+        <Style Selector="ScrollViewer.IndexScroll">
+            <Setter Property="AllowAutoHide" Value="False" />
+            <Style Selector="^ ScrollBar#PART_VerticalScrollBar">
+                <Setter Property="Visibility" Value="Visible"></Setter>
+                <Setter Property="AllowAutoHide" Value="False" />
+                <Setter Property="Width" Value="8" />
+                <Setter Property="MinWidth" Value="8" />
+                <Style Selector="^ RepeatButton#PART_LineUpButton">
+                    <Setter Property="IsVisible" Value="False" />
+                </Style>
+                <Style Selector="^ Thumb Border">
+                    <Setter Property="Background" Value="#47DBFB" />
+                    <Setter Property="ZIndex" Value="11"></Setter>
+                    <Setter Property="CornerRadius" Value="0" />
+                </Style>
+                <Style Selector="^ RepeatButton#PART_LineDownButton">
+                    <Setter Property="IsVisible" Value="False" />
+                </Style>
+
+            </Style>
+        </Style>
+    </UserControl.Styles>
+
+    <Panel>
+        <Button
+            VerticalAlignment="Center"
+            HorizontalAlignment="Left"
+            x:Name="TestButton"
+            ZIndex="10"
+            Content="测试"
+            Click="TestButton_OnClick">
+        </Button>
+        <components:TopNavView
+            x:Name="TopNavView"
+            ZIndex="3" Height="70"
+            VerticalAlignment="Top"
+            Margin="0 0 8 0" />
+        <ScrollViewer
+            VerticalScrollBarVisibility="Visible"
+            x:Name="ScrollViewer"
+            Classes="IndexScroll">
+            <Grid Background="#EFEFEF" RowDefinitions="Auto,*">
+                <components:ImageTrans />
+                <Border Grid.Row="1" x:Name="MainBorder" Margin="0 65 0 0">
+                    <Grid RowDefinitions="*,300">
+                        <Grid Grid.Row="0" ColumnDefinitions="2*,5*,2*">
+                            <components:LeftNavView
+                                HorizontalAlignment="Right"
+                                Margin="10 0 10 0" />
+                            <ContentControl
+                                Grid.Column="1"
+                                Content="{Binding MainView}" />
+                            <components:RightNavView
+                                Grid.Column="2"
+                                x:Name="RightNavView"
+                                Margin="10 0 10 0" />
+                        </Grid>
+                        <components:BottomNavView Grid.Row="1" x:Name="BottomNavView" />
+                    </Grid>
+                </Border>
+            </Grid>
+        </ScrollViewer>
+        <!-- 回到顶部按钮 -->
+        <Button HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Background="Transparent"
+                x:Name="ToTopButton"
+                Theme="{DynamicResource NullButton}"
+                Command="{Binding ToTopCommand}"
+                Margin="0 0 40 30"
+                IsVisible="{Binding ToTopImageIsShow}">
+            <Button.Styles>
+                <Style Selector="Button">
+                    <Style Selector="^:pointerover">
+                        <Setter Property="Cursor" Value="Hand" />
+                    </Style>
+                </Style>
+            </Button.Styles>
+            <Image Source="../Assets/to-top.png" Height="50" Width="50" Opacity="{Binding ToTopImageOpacity}" >
+                <Image.Transitions>
+                    <Transitions>
+                        <DoubleTransition Property="Opacity" Duration="0:0:0.2" />
+                    </Transitions>
+                </Image.Transitions>
+
+            </Image>
+        </Button>
+    </Panel>
+</abstracts:UserComponent>

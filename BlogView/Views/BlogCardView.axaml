@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:BlogView.ViewModels"
+             xmlns:models="clr-namespace:Blog.Lib.Models;assembly=Blog.Lib"
+             xmlns:u="https://irihi.tech/ursa"
+             xmlns:controls="clr-namespace:BlogView.Controls"
+             xmlns:u-semi="https://irihi.tech/ursa/themes/semi"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="BlogView.Views.BlogCardListView">
+    <Design.DataContext>
+        <viewModels:BlogCardListViewModel />
+    </Design.DataContext>
+    <Grid RowDefinitions="Auto,*,Auto">
+        <Border Grid.Row="0" 
+                Classes="Card"
+                Margin="15 4 15 20"
+                Padding="0 8 0 8"
+                IsVisible="{Binding TopTitle,Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+            <TextBlock Text="{Binding TopTitle}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                       FontSize="26" FontWeight="Bold" />
+        </Border>
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding CardVos}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="models:BlogCardVo">
+                    <controls:BlogCardItem
+                        Id="{Binding Id}"
+                        Title="{Binding Title}"
+                        CreateTime="{Binding CreateTime}"
+                        Views="{Binding Views}"
+                        Words="{Binding Words}"
+                        Description="{Binding Description}"
+                        ReadTime="{Binding ReadTime}"
+                        Category="{Binding Category}"
+                        Tags="{Binding Tags}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <u:Pagination
+            IsVisible="{Binding PageIsShow}"
+            Margin="0 0 0 30" HorizontalAlignment="Center" Grid.Row="2"
+            TotalCount="{Binding PageModel.Total}"
+            PageSize="{Binding PageModel.PageSize}"
+            CurrentPage="{Binding PageModel.PageNum}"
+            Command="{Binding PageChangedCommand}"
+            CommandParameter="{Binding $self.CurrentPage}">
+            <u:Pagination.Styles>
+                <u-semi:SemiTheme Locale="zh-CN" />
+                <StyleInclude Source="avares://Semi.Avalonia/Themes/Index.axaml" />
+            </u:Pagination.Styles>
+        </u:Pagination>
+    </Grid>
+</UserControl>

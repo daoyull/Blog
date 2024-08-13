@@ -1,0 +1,94 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:BlogView.ViewModels"
+             xmlns:converts1="clr-namespace:BlogView.Converts"
+             xmlns:converts2="clr-namespace:AvaloniaBlog.Lib.Converts;assembly=AvaloniaBlog.Lib"
+             xmlns:models="clr-namespace:Blog.Lib.Models;assembly=Blog.Lib"
+             xmlns:u="https://irihi.tech/ursa"
+             xmlns:u-semi="https://irihi.tech/ursa/themes/semi"
+             xmlns:avalonia="clr-namespace:Markdig.Avalonia;assembly=Markdig.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="BlogView.Views.MomentsView"
+             x:DataType="viewModels:MomentsViewModel">
+    <Design.DataContext>
+        <viewModels:MomentsViewModel />
+    </Design.DataContext>
+    <UserControl.Resources>
+        <converts2:DateTimeConvert x:Key="DateTimeConvert" />
+        <converts1:MonentsHeightConvert x:Key="HeightConvert" />
+    </UserControl.Resources>
+    <Border Classes="Card" Padding="0">
+        <StackPanel>
+            <TextBlock Text="我的动态" Margin="0 10 0 0" HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontWeight="Bold" FontSize="25">
+            </TextBlock>
+            <Border Margin="0 10 0 0" Height="1" Background="#f0f0f0"></Border>
+            <ItemsControl ItemsSource="{Binding Source}" Margin="20 20 0 0">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="models:MomentVo">
+                        <Panel x:Name="GridItem">
+                            <Rectangle Fill="#f0f0f0" Width="1"
+                                       HorizontalAlignment="Left"
+                                       Margin="20 0 0 0"
+                                       Height="{Binding #GridItem.Bounds.Height}" />
+                            <Grid ColumnDefinitions="Auto,*">
+                                <Border VerticalAlignment="Top" CornerRadius="25"
+                                        ClipToBounds="True">
+                                    <Image Height="40" Width="40" VerticalAlignment="Top"
+                                           Source="../Assets/avatar.jpg">
+                                    </Image>
+                                </Border>
+                                <StackPanel Grid.Column="1">
+                                    <Border CornerRadius="4" Margin="20 0 20 0"
+                                            Classes="Card" Padding="0">
+                                        <StackPanel>
+                                            <Panel Height="40">
+                                                <Label Content="DaoYu" FontWeight="Bold" Margin="10 0 0 0"
+                                                       VerticalAlignment="Center" />
+                                                <Label
+                                                    Margin="0 0 10 0"
+                                                    VerticalAlignment="Center"
+                                                    Content="{Binding CreateTime,Converter={StaticResource DateTimeConvert},ConverterParameter='yyyy-MM-dd HH:mm'}"
+                                                    HorizontalAlignment="Right" />
+                                                <Path Stroke="#f0f0f0" StrokeThickness="1" Fill="White"
+                                                      Data="m0,12 l-10,8 l10,8">
+                                                </Path>
+                                            </Panel>
+                                            <Border Height="1" Background="#f0f0f0"></Border>
+                                            <Border Padding="10">
+                                                <avalonia:MarkView Text="{Binding Content}" />
+                                            </Border>
+                                            <!--     <Border Height="1" Background="#f0f0f0"></Border> -->
+                                            <!--     <StackPanel Orientation="Horizontal" Margin="10 8 0 8"> -->
+                                            <!--         <TextBlock FontSize="16"  ic:Iconfont.Icon="Heart1"></TextBlock> -->
+                                            <!--         <TextBlock Text="{Binding Likes}"></TextBlock> -->
+                                            <!--     </StackPanel> -->
+                                        </StackPanel>
+                                    </Border>
+                                    <Control Height="20"></Control>
+                                </StackPanel>
+
+                            </Grid>
+                        </Panel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <u:Pagination
+                IsVisible="{Binding PageIsShow}"
+                Margin="0 20 0 30" HorizontalAlignment="Center"
+                TotalCount="{Binding PageModel.Total}"
+                PageSize="{Binding PageModel.PageSize}"
+                CurrentPage="{Binding PageModel.PageNum}"
+                Command="{Binding PageChangedCommand}"
+                CommandParameter="{Binding $self.CurrentPage}">
+                <u:Pagination.Styles>
+                    <u-semi:SemiTheme Locale="zh-CN" />
+                    <StyleInclude Source="avares://Semi.Avalonia/Themes/Index.axaml" />
+                </u:Pagination.Styles>
+            </u:Pagination>
+        </StackPanel>
+    </Border>
+</UserControl>

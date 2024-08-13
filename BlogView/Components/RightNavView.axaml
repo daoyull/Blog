@@ -1,0 +1,126 @@
+<UserControl
+    x:Class="BlogView.Components.RightNavView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:BlogView.ViewModels"
+    xmlns:converts="clr-namespace:AvaloniaBlog.Lib.Converts;assembly=AvaloniaBlog.Lib"
+    xmlns:ic="clr-namespace:AvaloniaBlog.Lib.Controls;assembly=AvaloniaBlog.Lib"
+    xmlns:entity="clr-namespace:Blog.Lib.Entity;assembly=Blog.Lib"
+    xmlns:controls="clr-namespace:Markdig.Avalonia.Controls;assembly=Markdig.Avalonia"
+    x:Name="MainRightNav"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="viewModels:RightNavViewModel"
+    mc:Ignorable="d">
+    <Design.DataContext>
+        <viewModels:RightNavViewModel />
+    </Design.DataContext>
+    <UserControl.Resources>
+        <converts:DateTimeConvert x:Key="DateTimeConvert" />
+    </UserControl.Resources>
+
+    <StackPanel x:Name="MainStackPanel" MaxWidth="300" HorizontalAlignment="Left">
+        <Border
+            Padding="5"
+            Classes="Card Hover"
+            CornerRadius="8">
+            <StackPanel>
+                <StackPanel Height="30" Orientation="Horizontal">
+                    <TextBlock
+                        Margin="1,0,5,0"
+                        VerticalAlignment="Center"
+                        ic:Iconfont.Icon="Article" />
+                    <Label VerticalAlignment="Center">随机文章</Label>
+                </StackPanel>
+                <Border Height="2" Background="Orange" />
+                <ItemsControl Margin="0,5,0,0" ItemsSource="{Binding Blogs}" x:Name="RandomItemControl">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="entity:RandomBlog">
+                            <Panel Margin="5 8 5 8">
+                                <Border Height="110" ClipToBounds="True" Theme="{DynamicResource NullButton}"
+                                        CornerRadius="6">
+                                    <Border.Styles>
+                                        <Style Selector="Border:pointerover">
+                                            <Setter Property="Cursor" Value="Hand"></Setter>
+                                        </Style>
+                                    </Border.Styles>
+                                    <Button Theme="{DynamicResource NullButton}"
+                                            Command="{Binding $parent[ItemsControl].((viewModels:RightNavViewModel)DataContext).RouterBlogDetailCommand}"
+                                            CommandParameter="{Binding Id}">
+                                        <ic:CacheImageAsync Stretch="Fill" Url="{Binding PreviewImg}" />
+                                    </Button>
+
+                                </Border>
+                                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="6 0 0 6">
+                                    <TextBlock Foreground="White"
+                                               Text="{Binding CreateTime,Converter={StaticResource DateTimeConvert},ConverterParameter='yyyy-MM-dd'}" />
+                                    <TextBlock Foreground="White" Text="{Binding Title}" />
+                                </StackPanel>
+                            </Panel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
+        </Border>
+        <Border
+            Margin="0 10 0 0"
+            x:Name="TagCard"
+            Padding="5"
+            Classes="Card Hover">
+            <StackPanel>
+                <StackPanel Height="30" Orientation="Horizontal">
+                    <TextBlock
+                        Margin="1,0,5,0"
+                        VerticalAlignment="Center"
+                        ic:Iconfont.Icon="Tags" />
+                    <Label VerticalAlignment="Center">标签云</Label>
+                </StackPanel>
+                <Border Height="2" Background="Orange" />
+                <ItemsControl Margin="0,5,0,0" ItemsSource="{Binding Tags}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button>
+                                <Button.Theme>
+                                    <ControlTheme TargetType="Button">
+                                        <Setter Property="Template">
+                                            <ControlTemplate>
+                                                <Border
+                                                    Height="26"
+                                                    Margin="3,2,3,2"
+                                                    Padding="5,1,5,1"
+                                                    Background="{Binding TagColor}"
+                                                    CornerRadius="5">
+                                                    <Label Content="{Binding TagName}" Foreground="White" />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter>
+                                        <Style Selector="^:pointerover">
+                                            <Setter Property="Cursor" Value="Hand" />
+                                        </Style>
+                                        <Setter Property="Command"
+                                                Value="{Binding #MainRightNav.((viewModels:RightNavViewModel)DataContext).RouterTagCommand}" />
+                                        <Setter Property="CommandParameter" Value="{Binding}" />
+                                    </ControlTheme>
+                                </Button.Theme>
+                            </Button>
+
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+            </StackPanel>
+
+        </Border>
+
+    </StackPanel>
+
+
+</UserControl>

@@ -1,0 +1,244 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:AvaloniaBlog.Lib.Controls;assembly=AvaloniaBlog.Lib"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="BlogView.Components.ImageTrans">
+    <UserControl.Styles>
+        <!-- 来回移动的线 -->
+        <Style Selector="Border.Line">
+            <Style.Animations>
+                <Animation Duration="0:0:1.5" IterationCount="INFINITE">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="TranslateTransform.Y" Value="-20" />
+                        <Setter Property="Height" Value="1"></Setter>
+                    </KeyFrame>
+                    <KeyFrame Cue="50%">
+                        <Setter Property="TranslateTransform.Y" Value="10" />
+                    </KeyFrame>
+                    <KeyFrame Cue="60%">
+                        <Setter Property="TranslateTransform.Y" Value="30" />
+                        <Setter Property="Height" Value="3"></Setter>
+                    </KeyFrame>
+                    <KeyFrame Cue="70%">
+                        <Setter Property="TranslateTransform.Y" Value="-20" />
+                    </KeyFrame>
+                    <KeyFrame Cue="80%">
+                        <Setter Property="TranslateTransform.Y" Value="30" />
+                        <Setter Property="Height" Value="1"></Setter>
+                    </KeyFrame>
+                    <KeyFrame Cue="90%">
+                        <Setter Property="TranslateTransform.Y" Value="-30" />
+                    </KeyFrame>
+                    <KeyFrame Cue="95%">
+                        <Setter Property="TranslateTransform.Y" Value="10" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="TranslateTransform.Y" Value="-20" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+        <!-- 标题基础样式 -->
+        <Style Selector="TextBlock.IndexTextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="120" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <!-- 白色部分样式 -->
+        <Style Selector="TextBlock.White">
+            <Style.Animations>
+                <Animation Duration="0:0:0.6" IterationCount="INFINITE">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="TranslateTransform.X" Value="0" />
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="10%">
+                        <Setter Property="TranslateTransform.X" Value="-0.5" />
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="20%">
+                        <Setter Property="TranslateTransform.X" Value="-0.8" />
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="30%">
+                        <Setter Property="TranslateTransform.X" Value="-1" />
+                        <Setter Property="TranslateTransform.Y" Value="-0.5" />
+                    </KeyFrame>
+                    <KeyFrame Cue="40%">
+                        <Setter Property="TranslateTransform.X" Value="-1.3" />
+                        <Setter Property="TranslateTransform.Y" Value="-1" />
+                    </KeyFrame>
+                    <KeyFrame Cue="50%">
+                        <Setter Property="TranslateTransform.X" Value="-1.5" />
+                        <Setter Property="TranslateTransform.Y" Value="-2" />
+                    </KeyFrame>
+                    <KeyFrame Cue="60%">
+                        <Setter Property="TranslateTransform.X" Value="-2" />
+                        <Setter Property="TranslateTransform.Y" Value="1" />
+                    </KeyFrame>
+                    <KeyFrame Cue="70%">
+                        <Setter Property="TranslateTransform.X" Value="-1.5" />
+                        <Setter Property="TranslateTransform.Y" Value="2" />
+                    </KeyFrame>
+                    <KeyFrame Cue="80%">
+                        <Setter Property="TranslateTransform.X" Value="-1" />
+                        <Setter Property="TranslateTransform.Y" Value="1" />
+                    </KeyFrame>
+                    <KeyFrame Cue="90%">
+                        <Setter Property="TranslateTransform.X" Value="-0.5" />
+                        <Setter Property="TranslateTransform.Y" Value="0.5" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="TranslateTransform.X" Value="0" />
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+        <!-- 左面样式 -->
+        <Style Selector="TextBlock.Left">
+            <Style.Animations>
+                <Animation Duration="0:0:0.7" IterationCount="INFINITE">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="TranslateTransform.X" Value="0" />
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="10%">
+                        <Setter Property="TranslateTransform.X" Value="-3.5" />
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="20%">
+                        <Setter Property="TranslateTransform.X" Value="-3.8" />
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="30%">
+                        <Setter Property="TranslateTransform.X" Value="-4" />
+                        <Setter Property="TranslateTransform.Y" Value="-1.5" />
+                    </KeyFrame>
+                    <KeyFrame Cue="40%">
+                        <Setter Property="TranslateTransform.X" Value="-4.3" />
+                        <Setter Property="TranslateTransform.Y" Value="-2" />
+                    </KeyFrame>
+                    <KeyFrame Cue="50%">
+                        <Setter Property="TranslateTransform.X" Value="-4.5" />
+                        <Setter Property="TranslateTransform.Y" Value="-3" />
+                    </KeyFrame>
+                    <KeyFrame Cue="60%">
+                        <Setter Property="TranslateTransform.X" Value="-5" />
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="70%">
+                        <Setter Property="TranslateTransform.X" Value="-4.5" />
+                        <Setter Property="TranslateTransform.Y" Value="1" />
+                    </KeyFrame>
+                    <KeyFrame Cue="80%">
+                        <Setter Property="TranslateTransform.X" Value="-4" />
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="90%">
+                        <Setter Property="TranslateTransform.X" Value="-3.5" />
+                        <Setter Property="TranslateTransform.Y" Value="-0.5" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="TranslateTransform.X" Value="0" />
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+        <!-- 右面样式 -->
+        <Style Selector="TextBlock.Right">
+            <Style.Animations>
+                <Animation Duration="0:0:0.8" IterationCount="INFINITE">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="TranslateTransform.X" Value="0" />
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="10%">
+                        <Setter Property="TranslateTransform.X" Value="2.5" />
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="20%">
+                        <Setter Property="TranslateTransform.X" Value="2.2" />
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="30%">
+                        <Setter Property="TranslateTransform.X" Value="2" />
+                        <Setter Property="TranslateTransform.Y" Value="0.5" />
+                    </KeyFrame>
+                    <KeyFrame Cue="40%">
+                        <Setter Property="TranslateTransform.X" Value="1.7" />
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="50%">
+                        <Setter Property="TranslateTransform.X" Value="1.5" />
+                        <Setter Property="TranslateTransform.Y" Value="-1" />
+                    </KeyFrame>
+                    <KeyFrame Cue="60%">
+                        <Setter Property="TranslateTransform.X" Value="1" />
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="70%">
+                        <Setter Property="TranslateTransform.X" Value="1.5" />
+                        <Setter Property="TranslateTransform.Y" Value="1" />
+                    </KeyFrame>
+                    <KeyFrame Cue="80%">
+                        <Setter Property="TranslateTransform.X" Value="2" />
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="90%">
+                        <Setter Property="TranslateTransform.X" Value="2.5" />
+                        <Setter Property="TranslateTransform.Y" Value="1.5" />
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="TranslateTransform.X" Value="0" />
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+        <!-- Down -->
+        <Style Selector="Button.Down">
+            <Setter Property="Theme" Value="{DynamicResource NullButton}" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Style.Animations>
+                <Animation Duration="0:0:1.5" IterationCount="INFINITE">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="TranslateTransform.Y" Value="0" />
+                    </KeyFrame>
+                    <KeyFrame Cue="50%">
+                        <Setter Property="TranslateTransform.Y" Value="-10" />
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+            <Style Selector="^ TextBlock">
+                <Setter Property="Opacity" Value="0.5"></Setter>
+            </Style>
+            <Style Selector="^:pointerover">
+                <Setter Property="Cursor" Value="Hand" />
+                <Style Selector="^ TextBlock">
+                    <Setter Property="Opacity" Value="1"></Setter>
+                </Style>
+            </Style>
+        </Style>
+    </UserControl.Styles>
+    <Panel PointerMoved="InputElement_OnPointerMoved" Background="#EFEFEF">
+        <Image Opacity="0" x:Name="Image1" Source="../Assets/bg1.jpg"></Image>
+        <Image Opacity="1" x:Name="Image2" Source="../Assets/bg2.jpg"></Image>
+        <Image Opacity="0" x:Name="Image3" Source="../Assets/bg3.jpg"></Image>
+
+        <Border Height="2" Background="Black" Width="{Binding #Title.Bounds.Width}" Classes="Line" ZIndex="3" />
+        <TextBlock Text="I Blog" ZIndex="1" Classes="IndexTextBlock White" x:Name="Title" />
+        <TextBlock Text="I Blog" x:Name="IndexTextBlock1" Foreground="Aqua" Classes="IndexTextBlock Left" />
+        <TextBlock Text="I Blog" x:Name="IndexTextBlock2" Foreground="Red" Classes="IndexTextBlock Right" />
+
+        <Button Classes="Down" Margin="0 0 0 120" Click="Button_OnClick">
+            <TextBlock controls:Iconfont.Icon="IndexDown" FontSize="70"></TextBlock>
+        </Button>
+    </Panel>
+</UserControl>

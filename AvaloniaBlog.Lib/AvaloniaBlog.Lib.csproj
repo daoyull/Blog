@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+
+    <ItemGroup>
+      <ProjectReference Include="..\Common\src\Common.Mvvm\Common.Mvvm.csproj" />
+      <ProjectReference Include="..\Markdig.Avalonia\Markdig.Avalonia\Markdig.Avalonia.csproj" />
+      <ProjectReference Include="..\Markdown.Lib\Markdown.Lib.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Assets\Fonts\iconfont.ttf" />
+      <AvaloniaResource Include="Assets\Fonts\iconfont.ttf">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </AvaloniaResource>
+    </ItemGroup>
+    
+</Project>

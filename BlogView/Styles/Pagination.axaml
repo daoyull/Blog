@@ -1,0 +1,23 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:u="https://irihi.tech/ursa">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="u|PaginationButton">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="Margin" Value="3 0 3 0" />
+        <Style Selector="^:pointerover">
+            <Style Selector="^ /template/ContentPresenter PathIcon Border Viewbox /template/ Path">
+                <Setter Property="Fill" Value="#409EFF"></Setter>
+            </Style>
+            <Style Selector="^ /template/ContentPresenter TextBlock">
+                <Setter Property="Foreground" Value="#409EFF" />
+            </Style>
+        </Style>
+
+    </Style>
+</Styles>

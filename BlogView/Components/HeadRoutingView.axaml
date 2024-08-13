@@ -1,0 +1,69 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ic="clr-namespace:AvaloniaBlog.Lib.Controls;assembly=AvaloniaBlog.Lib"
+             xmlns:views="clr-namespace:BlogView.Views"
+             xmlns:components="clr-namespace:BlogView.Components"
+             xmlns:semi="https://irihi.tech/semi"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="BlogView.Components.HeadRoutingView">
+    <UserControl.Styles>
+        <Style Selector="TreeView.RouterTreeView">
+            <Style Selector="^ /template/TreeViewItem:selected">
+                <Setter Property="Foreground" Value="Aquamarine"></Setter>
+            </Style>
+            <Style Selector="^ TreeViewItem">
+                <Style Selector="^ ToggleButton#PART_ExpandCollapseChevron">
+                    <Setter Property="IsVisible" Value="False"></Setter>
+                </Style>
+                <Style Selector="^ ContentPresenter#PART_HeaderPresenter">
+                    <Setter Property="Padding" Value="0"/>
+                </Style>
+            </Style>
+        </Style>
+        <Style Selector="Border.Item">
+            <Style Selector="^:pointerover">
+                <Setter Property="Cursor" Value="Hand" />
+            </Style>
+            <Setter Property="Margin" Value="0"></Setter>
+            <Setter Property="Padding" Value="10,4,10,4"/>
+        </Style>
+    </UserControl.Styles>
+    <Border
+        Padding="5"
+        Classes="Card Hover"
+        ClipToBounds="True"
+        CornerRadius="8"
+        x:Name="HeadingBorder"
+        >
+        <StackPanel>
+            <StackPanel Height="30" Orientation="Horizontal">
+                <TextBlock
+                    Margin="1,0,5,0"
+                    VerticalAlignment="Center"
+                    ic:Iconfont.Icon="Article" />
+                <Label VerticalAlignment="Center">文章导航</Label>
+            </StackPanel>
+            <Border Height="2" Background="Orange" />
+            <TreeView x:Name="MainTreeView" SelectionMode="Single" Classes="RouterTreeView"
+                      x:DataType="components:RouterItem" Margin="0 10 0 0">
+                <TreeView.Styles>
+                    <semi:SemiTheme Locale="zh-CN" />
+                    <StyleInclude Source="avares://Semi.Avalonia/Themes/Index.axaml" />
+                    <Style Selector="TreeViewItem">
+                        <Setter Property="IsExpanded" Value="{Binding (components:RouterItem).IsExpand}" />
+                    </Style>
+                </TreeView.Styles>
+                <TreeView.ItemTemplate>
+                    <TreeDataTemplate ItemsSource="{Binding Items}" DataType="components:RouterItem">
+                        <Border Classes="Item" Background="Transparent"
+                                PointerPressed="InputElement_OnPointerPressed">
+                            <TextBlock Text="{Binding Text}" />
+                        </Border>
+                    </TreeDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </StackPanel>
+    </Border>
+</UserControl>

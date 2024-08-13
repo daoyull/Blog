@@ -1,0 +1,14 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:lib="clr-namespace:AvaloniaBlog.Lib;assembly=AvaloniaBlog.Lib"
+             x:Class="BlogView.App"
+             RequestedThemeVariant="Light">
+
+    <Application.Styles>
+        <FluentTheme />
+        <StyleInclude Source="../Styles/_index.axaml"/>
+        <StyleInclude Source="avares://Markdig.Avalonia/Index.axaml" />
+        <lib:BlogTheme />
+        <StyleInclude Source="Themes/_index.axaml"/>
+    </Application.Styles>
+</Application>

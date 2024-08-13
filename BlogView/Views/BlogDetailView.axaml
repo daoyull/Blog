@@ -1,0 +1,18 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:BlogView.ViewModels"
+             xmlns:avalonia="clr-namespace:Markdig.Avalonia;assembly=Markdig.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="BlogView.Views.BlogDetailView"
+             x:DataType="viewModels:BlogDetailViewModel">
+    <Design.DataContext>
+        <viewModels:BlogDetailViewModel />
+    </Design.DataContext>
+    <Border Padding="20" Classes="Card">
+        <StackPanel>
+            <avalonia:MarkView x:Name="MarkView" Text="{Binding Model.Content}" />
+        </StackPanel>
+    </Border>
+</UserControl>

@@ -1,0 +1,205 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:BlogView.ViewModels"
+             xmlns:controls="clr-namespace:BlogView.Controls"
+             xmlns:ic="clr-namespace:AvaloniaBlog.Lib.Controls;assembly=AvaloniaBlog.Lib"
+             xmlns:models="clr-namespace:Blog.Lib.Models;assembly=Blog.Lib"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="120"
+             d:Background="#EFEFEF"
+             x:Class="BlogView.Components.TopNavView"
+             x:DataType="viewModels:TopNavViewModel"
+             x:Name="MainUserControl">
+
+    <Design.DataContext>
+        <viewModels:TopNavViewModel />
+    </Design.DataContext>
+    <UserControl.Resources>
+        <DataTemplate x:DataType="models:CategoryCacheVo" x:Key="CategoryItem">
+            <Button
+                Theme="{DynamicResource NullButton}" Classes="CategoryItem"
+                Command="{Binding #MainUserControl.((viewModels:TopNavViewModel)DataContext).RouterCategoryCommand}"
+                CommandParameter="{Binding}">
+                <Label
+                    Foreground="White"
+                    Content="{Binding CategoryName}"
+                    VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </Button>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <UserControl.Styles>
+
+        <Style Selector="Button.CategoryItem">
+            <Setter Property="Padding" Value="5 8 5 8"></Setter>
+            <Setter Property="Background" Value="Transparent"></Setter>
+            <Style Selector="^:pointerover">
+                <Setter Property="Background" Value="#262626"></Setter>
+            </Style>
+        </Style>
+
+        <Style Selector="controls|NoCheckToggleButton Border.NoCheckToggle">
+            <Setter Property="Background" Value="Transparent"></Setter>
+            <Style Selector="^:pointerover">
+                <Setter Property="Cursor" Value="Hand"></Setter>
+                <Setter Property="Background" Value="{DynamicResource TopBorderBrush}"></Setter>
+            </Style>
+        </Style>
+        <Style Selector="controls|NoCheckToggleButton:checked Border.NoCheckToggle">
+            <Setter Property="Background" Value="{DynamicResource TopBorderBrush}"></Setter>
+        </Style>
+
+        <Style Selector="FlyoutPresenter.mySpecialClass">
+            <Setter Property="Margin" Value="0"></Setter>
+            <Setter Property="Padding" Value="0"></Setter>
+            <Setter Property="Background" Value="{DynamicResource TopNavBackground}"></Setter>
+
+        </Style>
+
+        <Style Selector="Expander.aa">
+            <Setter Property="Background" Value="Blue"></Setter>
+
+        </Style>
+    </UserControl.Styles>
+
+
+    <Border Margin="0 0 0 20">
+        <StackPanel Orientation="Horizontal" MinHeight="50" Background="{DynamicResource TopNavBackground}">
+            <TextBlock Foreground="{DynamicResource TopTitleColor}" VerticalAlignment="Center"
+                       HorizontalAlignment="Right"
+                       Margin="60 0 0 0" Text="I Blog" />
+
+            <!-- 首页 -->
+            <Border Width="1" Background="{DynamicResource TopBorderBrush}" Margin="20 0 0 0"></Border>
+            <Panel>
+                <controls:NoCheckToggleButton
+                    Command="{Binding RouterIndexCommand}"
+                    IsChecked="{Binding IconShow.Index}"
+                    Foreground="White">
+                    <Border Width="81" Padding="0" Margin="0" Classes="NoCheckToggle">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock ic:Iconfont.Icon="Home" Foreground="White" VerticalAlignment="Center" />
+                            <Label Margin="5 0 0 0" Foreground="White" VerticalAlignment="Center">首页</Label>
+                        </StackPanel>
+                    </Border>
+                </controls:NoCheckToggleButton>
+                <Path Data="m30,50 l10,10 l10,-10z" Fill="{DynamicResource TopBorderBrush}"
+                      IsVisible="{Binding IconShow.Index}" x:Name="IndexPath" />
+            </Panel>
+
+            <!-- 分类 -->
+            <Border Width="1" Background="{DynamicResource TopBorderBrush}" Margin="0"></Border>
+            <Panel>
+                <controls:NoCheckToggleButton
+                    x:Name="NoCheckToggleButton"
+                    IsChecked="{Binding IconShow.CategoryBlogListView}"
+                    Foreground="White">
+                    <Border Width="81" Padding="0" Margin="0" Classes="NoCheckToggle">
+                        <Button Theme="{DynamicResource NullButton}"
+                                Background="Transparent"
+                                x:Name="CategoryButton"
+                                VerticalAlignment="Stretch"
+                                HorizontalAlignment="Stretch">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                                            HorizontalAlignment="Center">
+                                    <TextBlock ic:Iconfont.Icon="Category" VerticalAlignment="Center"
+                                               Foreground="White" />
+                                    <Label Margin="5 0 0 0" Foreground="White" VerticalAlignment="Center">分类</Label>
+                                    <TextBlock ic:Iconfont.Icon="Down" VerticalAlignment="Center" FontSize="16"
+                                               FontWeight="Bold"
+                                               Foreground="White" />
+                                </StackPanel>
+                            </Button.Content>
+                            <Button.Flyout>
+                                <Flyout FlyoutPresenterClasses="mySpecialClass">
+                                    <Border Background="#1B1C1D" CornerRadius="8" Padding="0 2 0 2">
+                                        <ItemsControl ItemsSource="{Binding Source}"
+                                                      ItemTemplate="{StaticResource CategoryItem}" />
+                                    </Border>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+
+
+                    </Border>
+                </controls:NoCheckToggleButton>
+                <Path Data="m30,50 l10,10 l10,-10z" Fill="{DynamicResource TopBorderBrush}"
+                      IsVisible="{Binding IconShow.CategoryBlogListView}" />
+            </Panel>
+
+            <!-- 归档 -->
+            <Border Width="1" Background="{DynamicResource TopBorderBrush}" Margin="0"></Border>
+            <Panel>
+                <controls:NoCheckToggleButton
+                    Command="{Binding RouterArchivesCommand}"
+                    IsChecked="{Binding IconShow.Archives}"
+                    Foreground="White">
+                    <Border Width="81" Padding="0" Margin="0" Classes="NoCheckToggle">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock ic:Iconfont.Icon="Archives" VerticalAlignment="Center" Foreground="White" />
+                            <Label Margin="5 0 0 0" Foreground="White" VerticalAlignment="Center">归档</Label>
+                        </StackPanel>
+                    </Border>
+                </controls:NoCheckToggleButton>
+                <Path Data="m30,50 l10,10 l10,-10z" Fill="{DynamicResource TopBorderBrush}"
+                      IsVisible="{Binding IconShow.Archives}" />
+            </Panel>
+
+            <!-- 动态 -->
+            <Border Width="1" Background="{DynamicResource TopBorderBrush}"></Border>
+            <Panel>
+                <controls:NoCheckToggleButton IsChecked="{Binding IconShow.Moments}"
+                                              Command="{Binding RouterMomentCommand}"
+                                              Foreground="White">
+                    <Border Width="81" Padding="0" Margin="0" Classes="NoCheckToggle">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock ic:Iconfont.Icon="Moments" VerticalAlignment="Center" Foreground="White" />
+                            <Label Foreground="White" VerticalAlignment="Center" Margin="5 0 0 0">动态</Label>
+                        </StackPanel>
+                    </Border>
+                </controls:NoCheckToggleButton>
+                <Path Data="m30,50 l10,10 l10,-10z" Fill="{DynamicResource TopBorderBrush}" x:Name="Moments"
+                      IsVisible="{Binding IconShow.Moments}" />
+            </Panel>
+
+            <!-- 友人帐 -->
+            <Border Width="1" Background="{DynamicResource TopBorderBrush}"></Border>
+            <Panel>
+                <controls:NoCheckToggleButton IsChecked="{Binding IconShow.Friends}"
+                                              Command="{Binding RouterFriendCommand}"
+                                              Foreground="White">
+                    <Border Width="81" Padding="0" Margin="0" Classes="NoCheckToggle">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock ic:Iconfont.Icon="Friends" VerticalAlignment="Center" Foreground="White" />
+                            <Label Margin="5 0 0 0" Foreground="White" VerticalAlignment="Center">友人帐</Label>
+                        </StackPanel>
+                    </Border>
+                </controls:NoCheckToggleButton>
+                <Path Data="m30,50 l10,10 l10,-10z" Fill="{DynamicResource TopBorderBrush}" x:Name="Friends"
+                      IsVisible="{Binding IconShow.Friends}" />
+            </Panel>
+
+            <!-- 关于我 -->
+            <Border Width="1" Background="{DynamicResource TopBorderBrush}"></Border>
+            <Panel>
+                <controls:NoCheckToggleButton IsChecked="{Binding IconShow.AboutMe}"
+                                              Command="{Binding RouterAboutMeCommand}"
+                                              Foreground="White">
+                    <Border Width="81" Padding="0" Margin="0" Classes="NoCheckToggle">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBlock ic:Iconfont.Icon="AboutMe" VerticalAlignment="Center" Foreground="White" />
+                            <Label Margin="5 0 0 0" Foreground="White" VerticalAlignment="Center">关于我</Label>
+                        </StackPanel>
+                    </Border>
+                </controls:NoCheckToggleButton>
+                <Path Data="m30,50 l10,10 l10,-10z" Fill="{DynamicResource TopBorderBrush}" x:Name="Me"
+                      IsVisible="{Binding IconShow.AboutMe}" />
+
+            </Panel>
+            <Border Width="1" Background="{DynamicResource TopBorderBrush}"></Border>
+        </StackPanel>
+    </Border>
+
+</UserControl>

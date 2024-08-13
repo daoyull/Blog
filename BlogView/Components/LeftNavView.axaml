@@ -1,0 +1,115 @@
+<abstracts:UserComponent
+    x:TypeArguments="viewModels:LeftNavViewModel" xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ic="clr-namespace:AvaloniaBlog.Lib.Controls;assembly=AvaloniaBlog.Lib"
+    xmlns:viewModels="clr-namespace:BlogView.ViewModels"
+    xmlns:abstracts="clr-namespace:Common.Avalonia.Abstracts;assembly=Common.Avalonia"
+    xmlns:entity="clr-namespace:Blog.Lib.Entity;assembly=Blog.Lib"
+    xmlns:themes="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
+    xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
+    mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="600"
+    x:Class="BlogView.Components.LeftNavView"
+    x:DataType="viewModels:LeftNavViewModel">
+    <Design.DataContext>
+        <viewModels:LeftNavViewModel />
+    </Design.DataContext>
+    <UserControl.Styles>
+        <Style Selector="Expander.UserInfoExpander">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="Background" Value="White" />
+            <Style Selector="^ LayoutTransformControl#PART_ToggleTransform">
+                <Style Selector="^ ToggleButton#PART_ToggleButton">
+                    <Setter Property="Foreground" Value="Black" />
+                </Style>
+            </Style>
+
+        </Style>
+
+        <Style Selector="Border.HrefButton">
+            <Setter Property="CornerRadius" Value="50" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Width" Value="40" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Margin" Value="6 0 6 0" />
+            <Setter Property="Background" Value="#F5F5F6" />
+            <Style Selector="^:pointerover">
+                <Setter Property="Cursor" Value="Hand" />
+            </Style>
+        </Style>
+    </UserControl.Styles>
+
+    <UserControl.Resources>
+        <ControlTheme x:Key="LinkButton" TargetType="HyperlinkButton">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Classes="HrefButton">
+                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"
+                                          Content="{TemplateBinding Content}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </ControlTheme>
+    </UserControl.Resources>
+
+    <StackPanel>
+        <Border Classes="Card Hover" Padding="1" MaxWidth="300">
+            <StackPanel>
+                <Border>
+                    <Image Source="/Assets/avatar.jpg" />
+                </Border>
+                <Label FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="0 10 0 5"
+                       Content="{Binding Info.Title}" />
+                <TextBlock HorizontalAlignment="Center" FontSize="15" FontFamily="Arial,Helvetica"
+                           DataContext="{Binding Info.RollText}"
+                           x:Name="DescTextBlock" Margin="0 10 0 10" />
+                <Border Height="1" Background="#f0f0f0"></Border>
+                <Border Padding="10">
+                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <HyperlinkButton NavigateUri="{Binding Info.Github}" Theme="{DynamicResource LinkButton}">
+                            <TextBlock ic:Iconfont.Icon="GitHub"
+                                       Foreground="Black" />
+                        </HyperlinkButton>
+                        <HyperlinkButton NavigateUri="{Binding Info.Telegram}" Theme="{DynamicResource LinkButton}">
+                            <TextBlock ic:Iconfont.Icon="Telegram"
+                                       Foreground="#1296DB" FontSize="15" />
+                        </HyperlinkButton>
+                        <HyperlinkButton NavigateUri="{Binding Info.Bilibili}" Theme="{DynamicResource LinkButton}">
+                            <TextBlock ic:Iconfont.Icon="BiliBili"
+                                       Foreground="#1296DB" FontSize="14" />
+                        </HyperlinkButton>
+                        <HyperlinkButton NavigateUri="{Binding Info.Netease}" Theme="{DynamicResource LinkButton}">
+                            <TextBlock
+                                ic:Iconfont.Icon="NetEaseCloudMusic" Foreground="#E72D2C" />
+                        </HyperlinkButton>
+                        <HyperlinkButton NavigateUri="{Binding Info.Email}" Theme="{DynamicResource LinkButton}">
+                            <TextBlock
+                                FontSize="11"
+                                ic:Iconfont.Icon="Email" Foreground="Black" />
+                        </HyperlinkButton>
+                    </WrapPanel>
+                </Border>
+                <Border Height="1" Background="#f0f0f0"></Border>
+                <ItemsControl ItemsSource="{Binding Info.Favorites}">
+                    <ItemsControl.Styles>
+                        <themes:MaterialTheme BaseTheme="Dark" PrimaryColor="Purple" SecondaryColor="Lime" />
+                    </ItemsControl.Styles>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="entity:Favorite">
+                            <Expander
+                                Classes="UserInfoExpander"
+                                Header="{Binding Title}">
+                                <TextBlock Text="{Binding Content}" FontSize="15" Margin="10 5 10 5"
+                                           TextWrapping="Wrap">
+                                </TextBlock>
+                            </Expander>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</abstracts:UserComponent>
