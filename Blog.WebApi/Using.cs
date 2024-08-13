@@ -1,0 +1,1 @@
+﻿global using static Blog.WebApi.Helpers.ResultHelper;
