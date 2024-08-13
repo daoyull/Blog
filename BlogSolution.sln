@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Markdig.Avalonia", "Markdig.Avalonia\Markdig.Avalonia\Markdig.Avalonia.csproj", "{BA1C2A8F-1164-454C-AE6A-6786B0629298}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Avalonia", "Common\Common.Avalonia\Common.Avalonia.csproj", "{A73DE33D-D9CD-45CD-9210-9099498CC8DC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SubModules", "SubModules", "{190256B9-1BAA-41C3-A0CD-8C0DF3F8B030}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Lib", "Common\src\Common.Lib\Common.Lib.csproj", "{1691C260-282B-4E43-A035-6F736BCD7508}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Mvvm", "Common\src\Common.Mvvm\Common.Mvvm.csproj", "{A1CFD706-1CE7-4591-AC9D-419A1C83B47F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.FreeSql", "Common\src\Common.FreeSql\Common.FreeSql.csproj", "{B7958572-8B68-41D0-AC86-823AF58D3072}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Redis", "Common\src\Common.Redis\Common.Redis.csproj", "{5C3156E9-6378-42D5-B07F-003F73A00467}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BA1C2A8F-1164-454C-AE6A-6786B0629298}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA1C2A8F-1164-454C-AE6A-6786B0629298}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA1C2A8F-1164-454C-AE6A-6786B0629298}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA1C2A8F-1164-454C-AE6A-6786B0629298}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A73DE33D-D9CD-45CD-9210-9099498CC8DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A73DE33D-D9CD-45CD-9210-9099498CC8DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A73DE33D-D9CD-45CD-9210-9099498CC8DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A73DE33D-D9CD-45CD-9210-9099498CC8DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1691C260-282B-4E43-A035-6F736BCD7508}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1691C260-282B-4E43-A035-6F736BCD7508}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1691C260-282B-4E43-A035-6F736BCD7508}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1691C260-282B-4E43-A035-6F736BCD7508}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1CFD706-1CE7-4591-AC9D-419A1C83B47F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1CFD706-1CE7-4591-AC9D-419A1C83B47F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1CFD706-1CE7-4591-AC9D-419A1C83B47F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1CFD706-1CE7-4591-AC9D-419A1C83B47F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7958572-8B68-41D0-AC86-823AF58D3072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7958572-8B68-41D0-AC86-823AF58D3072}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7958572-8B68-41D0-AC86-823AF58D3072}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7958572-8B68-41D0-AC86-823AF58D3072}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C3156E9-6378-42D5-B07F-003F73A00467}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C3156E9-6378-42D5-B07F-003F73A00467}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C3156E9-6378-42D5-B07F-003F73A00467}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C3156E9-6378-42D5-B07F-003F73A00467}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A73DE33D-D9CD-45CD-9210-9099498CC8DC} = {190256B9-1BAA-41C3-A0CD-8C0DF3F8B030}
+		{BA1C2A8F-1164-454C-AE6A-6786B0629298} = {190256B9-1BAA-41C3-A0CD-8C0DF3F8B030}
+		{1691C260-282B-4E43-A035-6F736BCD7508} = {190256B9-1BAA-41C3-A0CD-8C0DF3F8B030}
+		{A1CFD706-1CE7-4591-AC9D-419A1C83B47F} = {190256B9-1BAA-41C3-A0CD-8C0DF3F8B030}
+		{B7958572-8B68-41D0-AC86-823AF58D3072} = {190256B9-1BAA-41C3-A0CD-8C0DF3F8B030}
+		{5C3156E9-6378-42D5-B07F-003F73A00467} = {190256B9-1BAA-41C3-A0CD-8C0DF3F8B030}
+	EndGlobalSection
+EndGlobal
