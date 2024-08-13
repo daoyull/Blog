@@ -1,0 +1,80 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
+             xmlns:viewModels="clr-namespace:BlogBackManager.ViewModels"
+             xmlns:ic="clr-namespace:AvaloniaBlog.Lib.Controls;assembly=AvaloniaBlog.Lib"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="BlogBackManager.Views.IndexView">
+
+    <Design.DataContext>
+        <viewModels:IndexViewModel />
+    </Design.DataContext>
+    <UserControl.DataContext>
+        <viewModels:IndexViewModel />
+    </UserControl.DataContext>
+    <Grid RowDefinitions="Auto,Auto,Auto">
+        <Grid ColumnDefinitions="*,*,*,*" Height="100">
+            <Border Grid.Column="0" Theme="{DynamicResource CardBorder}" Margin="10">
+                <Grid ColumnDefinitions="3*,*">
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" ic:Iconfont.Icon="Date" />
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="今日PV" />
+                        <TextBlock Text="90" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <Border Grid.Column="1" Theme="{DynamicResource CardBorder}" Margin="10">
+                <Grid ColumnDefinitions="3*,*">
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" ic:Iconfont.Icon="Date" />
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="今日PV" />
+                        <TextBlock Text="90" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <Border Grid.Column="2" Theme="{DynamicResource CardBorder}" Margin="10">
+                <Grid ColumnDefinitions="3*,*">
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" ic:Iconfont.Icon="Date" />
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="今日PV" />
+                        <TextBlock Text="90" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="3" Theme="{DynamicResource CardBorder}" Margin="10">
+                <Grid ColumnDefinitions="3*,*">
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" ic:Iconfont.Icon="Date" />
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="今日PV" />
+                        <TextBlock Text="90" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,*">
+            <Border Grid.Column="0" Height="400" Theme="{DynamicResource CardBorder}">
+                <Grid RowDefinitions="Auto,*">
+                    <TextBlock Text="分类下文章数量"></TextBlock>
+                    <lvc:PieChart
+                        Grid.Row="1"
+                        LegendPosition="Bottom"
+                        Series="{Binding CategorySeries}">
+                    </lvc:PieChart>
+                </Grid>
+            </Border>
+            <Border Grid.Column="1" Height="400" Theme="{DynamicResource CardBorder}">
+                <Grid RowDefinitions="Auto,*">
+                    <TextBlock Text="标签下文章数量"></TextBlock>
+                    <lvc:PieChart
+                        Grid.Row="1"
+                        LegendPosition="Bottom"
+                        Series="{Binding TagSeries}">
+                    </lvc:PieChart>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

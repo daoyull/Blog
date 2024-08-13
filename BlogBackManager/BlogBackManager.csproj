@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AvaloniaBlog.Lib\AvaloniaBlog.Lib.csproj" />
+      <ProjectReference Include="..\Blog.DbModule\Blog.DbModule.csproj" />
+      <ProjectReference Include="..\Common\Common.Avalonia\Common.Avalonia.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="App.axaml.cs">
+        <DependentUpon>App.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="MainWindow.axaml.cs">
+        <DependentUpon>MainWindow.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Dialogs\TagAddDialog.axaml.cs">
+        <DependentUpon>TagAddDialog.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Dialogs\TagEditDialog.axaml.cs">
+        <DependentUpon>TagEditDialog.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Dialogs\BlogEditDialog.axaml.cs">
+        <DependentUpon>BlogEditDialog.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.1.0" />
+      <PackageReference Include="Avalonia.Diagnostics" Version="11.1.2" />
+      <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.2" />
+      <PackageReference Include="Avalonia.Xaml.Interactions" Version="11.1.0" />
+      <PackageReference Include="Irihi.Ursa" Version="1.0.0" />
+      <PackageReference Include="Irihi.Ursa.Themes.Semi" Version="1.0.0" />
+      <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc2" />
+      <PackageReference Include="Semi.Avalonia" Version="11.1.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Components\IndexCard.axaml" />
+    </ItemGroup>
+
+</Project>

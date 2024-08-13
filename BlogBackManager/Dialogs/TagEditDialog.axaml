@@ -1,0 +1,49 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:dialogs="clr-namespace:BlogBackManager.Dialogs"
+             xmlns:converts="clr-namespace:BlogBackManager.Converts"
+             xmlns:u="https://irihi.tech/ursa"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="BlogBackManager.Dialogs.TagEditDialog">
+    <Design.DataContext>
+        <dialogs:TagEditDialogModel />
+    </Design.DataContext>
+    <UserControl.Resources>
+        <converts:ColorConvert x:Key="ColorConvert" />
+    </UserControl.Resources>
+    <Grid RowDefinitions="*,Auto">
+        <u:Form LabelAlignment="Center" LabelPosition="Left" DataContext="{Binding Model}" LabelWidth="*">
+
+            <u:Form.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="*" />
+                </ItemsPanelTemplate>
+            </u:Form.ItemsPanel>
+
+            <u:FormItem Label="标签名称" Grid.Row="0" Grid.Column="0" MaxHeight="200" IsRequired="True">
+                <TextBox Width="300" Text="{Binding TagName}" />
+            </u:FormItem>
+
+            <u:FormItem Label="标签颜色" Grid.Row="1" Grid.Column="0" MaxHeight="200">
+                <ColorPicker
+                    HorizontalAlignment="Left"
+                    Color="{Binding TagColor,Converter = {StaticResource ColorConvert}}"
+                    u:FormItem.IsRequired="True">
+                </ColorPicker>
+            </u:FormItem>
+
+            <u:FormItem Label="备注" Grid.Row="2" Grid.Column="0" MaxHeight="200">
+                <TextBox Width="300" Text="{Binding Remark}" />
+            </u:FormItem>
+
+        </u:Form>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Command="{Binding Command}" Classes="Secondary TableButton"
+                    Theme="{DynamicResource SolidButton}" Content="确认" />
+            <Button Command="{Binding CancelCommand}" Classes="Tertiary TableButton"
+                    Content="取消" />
+        </StackPanel>
+    </Grid>
+</UserControl>

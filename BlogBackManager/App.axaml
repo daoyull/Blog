@@ -1,0 +1,19 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:lib="clr-namespace:AvaloniaBlog.Lib;assembly=AvaloniaBlog.Lib"
+             xmlns:u-semi="https://irihi.tech/ursa/themes/semi"
+             x:Class="BlogBackManager.App"
+             RequestedThemeVariant="Light">
+
+    <Application.Styles>
+        <FluentTheme />
+        <u-semi:SemiTheme Locale="zh-CN" />
+        <StyleInclude Source="avares://Semi.Avalonia/Themes/Index.axaml" />
+        <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml" />
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+        <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+        <StyleInclude Source="avares://Markdig.Avalonia/Index.axaml" />
+        <StyleInclude Source="../Styles/_index.axaml" />
+        <lib:BlogTheme />
+    </Application.Styles>
+</Application>

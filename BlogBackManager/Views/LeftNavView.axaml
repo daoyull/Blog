@@ -1,0 +1,50 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:BlogBackManager.ViewModels"
+             xmlns:u="https://irihi.tech/ursa"
+             xmlns:models="clr-namespace:BlogBackManager.Models"
+             xmlns:ic="clr-namespace:AvaloniaBlog.Lib.Controls;assembly=AvaloniaBlog.Lib"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="BlogBackManager.Views.LeftNavView">
+    <Design.DataContext>
+        <viewModels:LeftNavViewModel />
+    </Design.DataContext>
+    <Border Theme="{DynamicResource CardBorder}">
+        <u:NavMenu
+            HorizontalAlignment="Left"
+            HeaderBinding="{Binding Header}"
+            IconBinding="{Binding Icon}"
+            IsHorizontalCollapsed="False"
+            Name="Menu"
+            ItemsSource="{Binding MenuItemSource}"
+            SelectedItem="{Binding SelectMenuItem}"
+            SubMenuBinding="{Binding Children}">
+            <u:NavMenu.Styles>
+                <Style Selector="u|NavMenuItem" x:DataType="models:MenuItem">
+                    <Setter Property="IsSeparator" Value="{Binding IsSeparator}" />
+                </Style>
+            </u:NavMenu.Styles>
+            <u:NavMenu.IconTemplate>
+                <DataTemplate>
+                    <TextBlock Margin="0 0 10 0" ic:Iconfont.Icon="{Binding}" />
+                </DataTemplate>
+            </u:NavMenu.IconTemplate>
+            <u:NavMenu.Header>
+                <Border Padding="10">
+                    <Grid HorizontalAlignment="Center" ColumnDefinitions="Auto, Auto">
+                        <TextBlock FontSize="25" ic:Iconfont.Icon="Archives"></TextBlock>
+                        <TextBlock
+                            FontSize="14"
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            IsVisible="{Binding !#Menu.IsHorizontalCollapsed}"
+                            Text="I Blog Manager"
+                            Theme="{DynamicResource TitleTextBlock}" />
+                    </Grid>
+                </Border>
+            </u:NavMenu.Header>
+        </u:NavMenu>
+    </Border>
+</UserControl>

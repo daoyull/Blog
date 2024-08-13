@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\**"/>
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia.Desktop" Version="11.1.2" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.1.2" />
+        <PackageReference Include="FreeSql.Provider.MySqlConnector" Version="3.2.833" />
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Assets\avalonia-logo.ico" />
+      <UpToDateCheckInput Remove="Views\MainWindow.axaml" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <None Update="appsettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="appsettings.Development.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <ProjectReference Include="..\BlogBackManager\BlogBackManager.csproj" />
+      <ProjectReference Include="..\Common\src\Common.FreeSql\Common.FreeSql.csproj" />
+    </ItemGroup>
+</Project>

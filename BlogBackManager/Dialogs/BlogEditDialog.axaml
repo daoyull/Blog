@@ -1,0 +1,134 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:dialogs="clr-namespace:BlogBackManager.Dialogs"
+             xmlns:u="https://irihi.tech/ursa"
+             xmlns:models="clr-namespace:Blog.Lib.Models;assembly=Blog.Lib"
+             xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
+             xmlns:visualBasic="clr-namespace:Microsoft.VisualBasic;assembly=Microsoft.VisualBasic.Core"
+             xmlns:behaviors="clr-namespace:BlogBackManager.Behaviors"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="BlogBackManager.Dialogs.BlogEditDialog">
+    <Design.DataContext>
+        <dialogs:BlogEditDialogModel />
+    </Design.DataContext>
+    <ScrollViewer>
+        <Grid x:Name="Grid" RowDefinitions="*,Auto" HorizontalAlignment="Stretch">
+            <u:Form LabelAlignment="Left" LabelPosition="Top" HorizontalAlignment="Stretch"
+                    DataContext="{Binding Model}" LabelWidth="*">
+                <u:Form.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid RowDefinitions="Auto, *, *, Auto, Auto,Auto" ColumnDefinitions="*,*" />
+                    </ItemsPanelTemplate>
+                </u:Form.ItemsPanel>
+                <u:FormItem Label="文章标题" MinWidth="150" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left"
+                            IsRequired="True">
+                    <TextBox Text="{Binding Title}" Watermark="请输入标题" />
+                </u:FormItem>
+                <u:FormItem Label="文章首图Url" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left"
+                            IsRequired="True">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Text="{Binding PreviewImg}" Watermark="请输入图片Url" MinWidth="150" />
+                        <Button VerticalAlignment="Center" Margin="5 0 0 0" Content="点击上传"></Button>
+                    </StackPanel>
+                </u:FormItem>
+                <u:FormItem Label="文章描述" Grid.Row="1" Grid.ColumnSpan="2">
+                    <Panel>
+                        <Button VerticalAlignment="Top" HorizontalAlignment="Right" ZIndex="2" Margin="10" Content="预览"
+                                Command="{Binding #Grid.((dialogs:BlogEditDialogModel)DataContext).ShowMarkViewCommand}"
+                                CommandParameter="{Binding Description}" />
+                        <Border MinHeight="200" Width="900" Padding="10 2 10 2" Theme="{DynamicResource CardBorder}">
+                            <avaloniaEdit:TextEditor>
+                                <Interaction.Behaviors>
+                                    <behaviors:DocumentTextBindingBehavior Text="{Binding Description, Mode=TwoWay}" />
+                                </Interaction.Behaviors>
+                            </avaloniaEdit:TextEditor>
+                        </Border>
+                    </Panel>
+
+                </u:FormItem>
+                <u:FormItem Label="文章正文" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Panel>
+                        <Button VerticalAlignment="Top" HorizontalAlignment="Right" ZIndex="2" Margin="10" Content="预览"
+                                Command="{Binding #Grid.((dialogs:BlogEditDialogModel)DataContext).ShowMarkViewCommand}"
+                                CommandParameter="{Binding Content}">
+                        </Button>
+                        <Border MinHeight="200" Width="900" Padding="10 2 10 2" Theme="{DynamicResource CardBorder}">
+                            <avaloniaEdit:TextEditor>
+                                <Interaction.Behaviors>
+                                    <behaviors:DocumentTextBindingBehavior Text="{Binding Content, Mode=TwoWay}" />
+                                </Interaction.Behaviors>
+                            </avaloniaEdit:TextEditor>
+                        </Border>
+                    </Panel>
+                </u:FormItem>
+                <u:FormItem Label="分类" IsRequired="True" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left">
+                    <ComboBox MinWidth="300"
+                              ItemsSource="{Binding #Grid.((dialogs:BlogEditDialogModel)DataContext).Categorys}"
+                              SelectedValueBinding="{Binding Id}"
+                              SelectedValue="{Binding CategoryId}">
+                        <ComboBox.SelectionBoxItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Height="10" Width="10" Fill="{Binding CategoryColor}" />
+                                    <Label Content="{Binding CategoryName}"></Label>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.SelectionBoxItemTemplate>
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Height="20" Width="20" Fill="{Binding CategoryColor}" />
+                                    <Label Margin="5 0 0 0" Content="{Binding CategoryName}"></Label>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </u:FormItem>
+                <u:FormItem Label="标签" IsRequired="True" MinWidth="300" Grid.Row="3" Grid.Column="1"
+                            HorizontalAlignment="Left">
+                    <u:MultiComboBox
+                        x:Name="MultiComboBox"
+                        SelectedItems="{Binding #Grid.((dialogs:BlogEditDialogModel)DataContext).SelectedTags}"
+                        IsEnabled="{Binding #Grid.((dialogs:BlogEditDialogModel)DataContext).Tags}"
+                        ItemsSource="{Binding #Grid.((dialogs:BlogEditDialogModel)DataContext).Tags}">
+                        <u:MultiComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Height="20" Width="20" Fill="{Binding TagColor}" />
+                                    <Label Margin="5 0 0 0" Content="{Binding TagName}"></Label>
+                                </StackPanel>
+                            </DataTemplate>
+                        </u:MultiComboBox.ItemTemplate>
+                        <u:MultiComboBox.SelectedItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" x:DataType="models:TagCacheVo">
+                                    <Rectangle Height="10" Width="10" Fill="{Binding TagColor}" />
+                                    <Label Content="{Binding TagName}"></Label>
+                                </StackPanel>
+                            </DataTemplate>
+                        </u:MultiComboBox.SelectedItemTemplate>
+                    </u:MultiComboBox>
+                </u:FormItem>
+
+                <u:FormItem MinWidth="300" IsRequired="True" Label="字数" Grid.Row="4" Grid.Column="0"
+                            HorizontalAlignment="Left">
+                    <TextBox Text="{Binding Words}" />
+                </u:FormItem>
+                <u:FormItem MinWidth="300" Label="阅读时间(分钟)" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Left">
+                    <TextBox Text="{Binding ReadTime}" />
+                </u:FormItem>
+                <u:FormItem MinWidth="300" Label="浏览次数" Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left">
+                    <TextBox Text="{Binding Views}" />
+                </u:FormItem>
+
+
+            </u:Form>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <Button Command="{Binding Command}" Classes="Secondary TableButton"
+                        Theme="{DynamicResource SolidButton}" Content="保存" />
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

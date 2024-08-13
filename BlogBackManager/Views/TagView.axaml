@@ -1,0 +1,118 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:BlogBackManager.ViewModels"
+             xmlns:models="clr-namespace:Blog.Lib.Models;assembly=Blog.Lib"
+             xmlns:u="https://irihi.tech/ursa"
+             xmlns:ic="clr-namespace:AvaloniaBlog.Lib.Controls;assembly=AvaloniaBlog.Lib"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="BlogBackManager.Views.TagView">
+    <Design.DataContext>
+        <viewModels:TagViewModel />
+    </Design.DataContext>
+    <UserControl.Styles>
+
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto">
+        <!-- 搜索栏 -->
+        <WrapPanel Orientation="Horizontal" Margin="8 5">
+            <u:Form Classes="TableSearchForm"
+                    DataContext="{Binding Pagination}"
+                    LabelPosition="Left"
+                    LabelWidth="*">
+                <u:FormItem Label="标签名称">
+                    <TextBox Classes="SearchTextBox" Watermark="请输入标签名称" Text="{Binding TagName}" />
+                </u:FormItem>
+            </u:Form>
+            <u:IconButton Classes="TableButton" Content="搜索" Theme="{DynamicResource SolidIconButton}"
+                          Command="{Binding RefreshCommand}">
+                <u:IconButton.Icon>
+                    <TextBlock ic:Iconfont.Icon="Search"></TextBlock>
+                </u:IconButton.Icon>
+            </u:IconButton>
+            <u:IconButton Classes="TableButton" Foreground="Black" Content="重置" BorderBrush="Gainsboro"
+                          Command="{Binding ResetSearchBarCommand}">
+                <u:IconButton.Icon>
+                    <TextBlock ic:Iconfont.Icon="Reset"></TextBlock>
+                </u:IconButton.Icon>
+            </u:IconButton>
+        </WrapPanel>
+        <!-- 操作栏 -->
+        <WrapPanel Grid.Row="1" Orientation="Horizontal" Margin="8 5">
+            <u:IconButton Classes="TableButton" Content="新增" Theme="{DynamicResource SolidIconButton}"
+                          Command="{Binding AddRowCommand}">
+                <u:IconButton.Icon>
+                    <TextBlock ic:Iconfont.Icon="Add"></TextBlock>
+                </u:IconButton.Icon>
+            </u:IconButton>
+            <u:IconButton Classes="TableButton Success" Content="修改" Theme="{DynamicResource SolidIconButton}"
+                          u:DisabledAdorner.IsEnabled="True" IsEnabled="{Binding IsSelectedSingle}"
+                          Command="{Binding EditRowCommand}"
+                          CommandParameter="{Binding SelectedRow}">
+                <u:IconButton.Icon>
+                    <TextBlock ic:Iconfont.Icon="Edit"></TextBlock>
+                </u:IconButton.Icon>
+            </u:IconButton>
+            <u:IconButton Classes="TableButton Danger" Content="删除" Theme="{DynamicResource SolidIconButton}"
+                          u:DisabledAdorner.IsEnabled="True" IsEnabled="{Binding SelectedRows.Count}"
+                          Command="{Binding DeleteRowsCommand}"
+                          CommandParameter="{Binding SelectedRows}">
+                <u:IconButton.Icon>
+                    <TextBlock ic:Iconfont.Icon="Delete"></TextBlock>
+                </u:IconButton.Icon>
+            </u:IconButton>
+        </WrapPanel>
+        <!-- 表格 -->
+        <DataGrid
+            Grid.Row="2"
+            Classes="Table"
+            IsReadOnly="True"
+            CanUserReorderColumns="False"
+            CanUserSortColumns="False"
+            CanUserResizeColumns="True"
+            ItemsSource="{Binding DataSource}"
+            x:Name="MainDataGrid">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding TagName}" Header="标签名称" />
+                <DataGridTemplateColumn Header="标签颜色">
+                    <DataTemplate x:DataType="models:TagVo">
+                        <Rectangle Fill="{Binding TagColor}"></Rectangle>
+                    </DataTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding Remark}" Header="备注" />
+                <DataGridTextColumn Binding="{Binding CreateTime}" Header="创建时间" />
+                <DataGridTextColumn Binding="{Binding UpdateTime}" Header="更新时间" />
+                <DataGridTemplateColumn Header="操作">
+                    <DataTemplate x:DataType="models:TagVo">
+                        <StackPanel Orientation="Horizontal">
+                            <u:IconButton Classes="TableButton Success" Content="修改"
+                                          Theme="{DynamicResource SolidIconButton}"
+                                          Command="{Binding $parent[DataGrid].((viewModels:TagViewModel)DataContext).EditRowCommand}"
+                                          CommandParameter="{Binding $self.DataContext}">
+                                <u:IconButton.Icon>
+                                    <TextBlock ic:Iconfont.Icon="Edit"></TextBlock>
+                                </u:IconButton.Icon>
+                            </u:IconButton>
+                            <u:IconButton Classes="TableButton Danger" Content="删除"
+                                          Theme="{DynamicResource SolidIconButton}"
+                                          Command="{Binding $parent[DataGrid].((viewModels:TagViewModel)DataContext).DeleteRowCommand}"
+                                          CommandParameter="{Binding $self.DataContext}">
+                                <u:IconButton.Icon>
+                                    <TextBlock ic:Iconfont.Icon="Delete"></TextBlock>
+                                </u:IconButton.Icon>
+                            </u:IconButton>
+                        </StackPanel>
+                    </DataTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <u:Pagination Grid.Row="3"
+                      IsVisible="{Binding IsPaginationShow}"
+                      HorizontalAlignment="Right"
+                      PageSize="{Binding Pagination.PageSize,Mode=TwoWay}"
+                      CurrentPage="{Binding Pagination.PageNum,Mode=TwoWay}"
+                      TotalCount="{Binding Pagination.Total,Mode=TwoWay}" />
+    </Grid>
+</UserControl>

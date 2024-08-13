@@ -1,0 +1,112 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:Common.Avalonia.Controls;assembly=Common.Avalonia"
+        xmlns:ic="clr-namespace:AvaloniaBlog.Lib.Controls;assembly=AvaloniaBlog.Lib"
+        xmlns:u="https://irihi.tech/ursa">
+    <Style Selector="controls|MultiSelectButton.Default">
+        <Setter Property="FontSize" Value="19" />
+        <Setter Property="Foreground" Value="Gainsboro" />
+        <Setter Property="Margin" Value="5 0 -15 0" />
+        <Style Selector="^:pointerover">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Foreground" Value="#0077FA" />
+        </Style>
+        <Style Selector="^:not-select">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Foreground="Gray"
+                               ic:Iconfont.Icon="MultiNotSelect" />
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="^:part-select">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Foreground="#0077FA"
+                               ic:Iconfont.Icon="MultiPartialSelect" />
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="^:all-select">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Foreground="#0077FA"
+                               FontSize="17"
+                               ic:Iconfont.Icon="MultiAllSelect" />
+                </ControlTemplate>
+            </Setter>
+        </Style>
+    </Style>
+    <Style Selector="TextBox.SearchTextBox">
+        <Setter Property="BorderBrush" Value="Gainsboro" />
+        <Setter Property="Background" Value="White"></Setter>
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="MinWidth" Value="150" />
+        <Setter Property="Padding" Value="12 6 12 6"></Setter>
+
+        <Style Selector="^:pointerover /template/Border#PART_ContentPresenterBorder">
+            <Setter Property="Background" Value="White" />
+        </Style>
+        <Style Selector="^:focus">
+            <Setter Property="BorderBrush" Value="Aqua"></Setter>
+        </Style>
+    </Style>
+    <Style Selector="u|IconButton.TableButton">
+        <Setter Property="Margin" Value="3 0"></Setter>
+        <Setter Property="Height" Value="35"></Setter>
+        <Setter Property="FontWeight" Value="SemiLight"></Setter>
+        <Style Selector="^ TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        </Style>
+        <Style Selector="^:disabled">
+            <Setter Property="BorderBrush" Value="Gainsboro" />
+        </Style>
+    </Style>
+    <Style Selector="DataGrid.Table">
+        <Setter Property="Margin" Value="10 10" />
+        <Setter Property="GridLinesVisibility" Value="All" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="Gainsboro" />
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="CanUserSortColumns" Value="False" />
+        <Setter Property="CanUserReorderColumns" Value="False" />
+        <Setter Property="CanUserResizeColumns" Value="False" />
+        <Style Selector="^ DataGridRow">
+            <Style Selector="^:selected">
+                <Style Selector="^ DataGridCell">
+                    <Setter Property="Background" Value="White"></Setter>
+                    <Style Selector="^ Rectangle">
+                        <Setter Property="StrokeThickness" Value="0"></Setter>
+                    </Style>
+                </Style>
+            </Style>
+            <Style Selector="^:pointerover">
+                <Style Selector="^ DataGridCell">
+                    <Setter Property="Background" Value="Gainsboro"></Setter>
+                </Style>
+            </Style>
+        </Style>
+
+        <Style Selector="^ DataGridColumnHeader">
+            <Setter Property="Background" Value="White"></Setter>
+            <Style Selector="^:pointerover Grid#PART_ColumnHeaderRoot">
+                <Setter Property="Background" Value="White"></Setter>
+            </Style>
+        </Style>
+    </Style>
+    <Style Selector="u|Form.TableSearchForm">
+        <Setter Property="ItemsPanel">
+            <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal" />
+            </ItemsPanelTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.TableButton">
+        <Setter Property="Margin" Value="6 0"></Setter>
+    </Style>
+</Styles>
