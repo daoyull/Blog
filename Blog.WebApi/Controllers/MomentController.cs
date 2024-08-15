@@ -21,15 +21,16 @@ public partial class MomentController : ControllerBase
         _momentService = momentService;
     }
 
-    
+
     [VisitLog(Behavitor = "动态")]
     [HttpGet("/web/moments")]
     public async Task<IActionResult> QueryPageListFront([FromQuery] MomentPageQueryDto query)
     {
         var momentResult = await _momentService.GetMomentPageList(query);
+        momentResult.IfSucc(s => s.List.ForEach(it => it.Content = Markdown.ToHtml(it.Content ?? "")));
         return momentResult.HandleResult();
     }
-    
+
     [HttpPut("/web/moment/like/{id}")]
     public async Task<IActionResult> LikeMoment([FromRoute] long id)
     {
