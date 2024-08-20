@@ -1,13 +1,13 @@
-using System.Threading.Tasks;
 using Blog.Lib.Models;
 using Blog.Lib.Service;
+using Common.Lib.Plugins;
 using Common.Lib.Service;
 using Common.Mvvm.Abstracts;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BlogView.ViewModels;
 
-public partial class BlogDetailViewModel : BaseViewModel
+public partial class BlogDetailViewModel : BaseViewModel, IRefresh
 {
     private readonly IBlogService _blogService;
 
@@ -19,13 +19,16 @@ public partial class BlogDetailViewModel : BaseViewModel
     public BlogDetailViewModel(IBlogService blogService)
     {
         _blogService = blogService;
+        PluginBuilder.AddPlugin<RefreshPlugin>();
     }
 
-    public async Task LoadBlogDetail(long blogId)
+    public long BlogId { get; set; }
+
+
+    public async Task Refresh()
     {
         Model = null;
-        var detailResult = await _blogService.GetBlogContentAsync(blogId);
+        var detailResult = await _blogService.GetBlogContentAsync(BlogId);
         detailResult.Handle(model => Model = model);
     }
-    
 }

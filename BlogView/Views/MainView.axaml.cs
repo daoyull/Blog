@@ -1,7 +1,4 @@
-using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using BlogView.Service;
 using BlogView.ViewModels;
 using Common.Avalonia.Abstracts;
@@ -14,11 +11,6 @@ public partial class MainView : UserComponent<MainViewModel>
     public MainView()
     {
         InitializeComponent();
-#if DEBUG
-        TestButton.IsVisible = true;
-#else
-        TestButton.IsVisible = false;
-#endif
     }
 
 
@@ -38,8 +30,5 @@ public partial class MainView : UserComponent<MainViewModel>
         }
     }
     
-
-    private void TestButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-    }
+    
 }

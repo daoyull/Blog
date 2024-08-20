@@ -40,9 +40,7 @@ public class PageService
     public void RouterBlogDetail(long blogId)
     {
         var view = new BlogDetailView();
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-        view.ViewModel?.LoadBlogDetail(blogId);
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        view.ViewModel!.BlogId = blogId;
         ChangeMainView(ViewType.BlogDetail, view);
     }
 
@@ -50,18 +48,18 @@ public class PageService
     public void RouterTagBlogList(TagCacheVo tag)
     {
         var view = new BlogCardListView();
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-        view.ViewModel?.RefreshPage(PageType.Tag, tag.Id);
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        view.ViewModel!.PageType = PageType.Tag;
+        view.ViewModel.Id = tag.Id;
         ChangeMainView(ViewType.TagBlogListView, view);
     }
 
     public void RouterCategoryBlogList(CategoryCacheVo category)
     {
         var view = new BlogCardListView();
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-        view.ViewModel?.RefreshPage(PageType.Category, category.Id);
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+
+        view.ViewModel!.PageType = PageType.Category;
+        view.ViewModel.Id = category.Id;
+
         ChangeMainView(ViewType.CategoryBlogListView, view);
     }
 
@@ -69,9 +67,7 @@ public class PageService
     public void RouterIndex()
     {
         var view = new BlogCardListView();
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-        view.ViewModel?.RefreshPage(PageType.Index);
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+        view.ViewModel!.PageType = PageType.Index;
         ChangeMainView(ViewType.Index, view);
     }
 

@@ -30,11 +30,7 @@ public partial class BlogCardListViewModel : BaseViewModel, IRefresh
         PageSize = 5
     };
 
-
     [ObservableProperty] private bool _pageIsShow;
-
-    private PageType _pageType = PageType.Index;
-    private long _id = 0;
 
     public BlogCardListViewModel(IBlogService blogService, ICategoryService categoryService, ITagService tagService)
     {
@@ -44,72 +40,16 @@ public partial class BlogCardListViewModel : BaseViewModel, IRefresh
         PluginBuilder.AddPlugin<RefreshPlugin>();
     }
 
-    public async Task RefreshPage(PageType pageType, long id = 0)
-    {
-        _pageType = pageType;
-        string title = string.Empty;
-        PageResult<BlogCardVo> result = default;
-
-        switch (pageType)
-        {
-            case PageType.Index:
-                _id = 0;
-                var queryCardPageList = await _blogService.QueryCardPageList(new BlogPageQueryDto()
-                {
-                    PageNum = PageModel.PageNum,
-                    PageSize = PageModel.PageSize
-                });
-                queryCardPageList.Handle(re =>
-                {
-                    result = re;
-                    RefreshUi(title, result);
-                });
-                break;
-            case PageType.Category:
-                if (id == 0)
-                {
-                    throw new BusinessException("分类不能为空");
-                }
-
-                _id = id;
-
-                var categoryResult = await _categoryService.GetAsync(new CategoryQueryDto() { Id = id });
-                categoryResult.Handle(async category =>
-                {
-                    title = $"分类{category.CategoryName}下的文章";
-                    var catResult =
-                        await _blogService.GetBlogPageByCategoryId(id, PageModel.PageNum, PageModel.PageSize);
-                    catResult.Handle(re =>
-                    {
-                        result = re;
-                        RefreshUi(title, result);
-                    });
-                });
-                break;
-            case PageType.Tag:
-                if (id == 0)
-                {
-                    throw new BusinessException("标签不能为空");
-                }
-
-                _id = id;
-                var tagResult = await _tagService.GetAsync(new TagQueryDto() { Id = id });
-                tagResult.Handle(async tag =>
-                {
-                    title = $"标签{tag.TagName}下的文章";
-                    var tagBlogs = await _blogService.GetBlogPageByTagId(id, PageModel.PageNum, PageModel.PageSize);
-                    tagBlogs.Handle(re =>
-                    {
-                        result = re;
-                        RefreshUi(title, result);
-                    });
-                });
-                break;
-        }
-    }
+    public PageType PageType { get; set; }
+    public long Id { get; set; }
 
     private void RefreshUi(string title, PageResult<BlogCardVo>? source)
     {
+        if (source == null)
+        {
+            return;
+        }
+
         List<BlogCardVo> blogCardVos = source.List;
         Dispatcher.UIThread.Post(() =>
         {
@@ -125,12 +65,67 @@ public partial class BlogCardListViewModel : BaseViewModel, IRefresh
     private async Task PageChanged(int pageNum)
     {
         PageModel.PageNum = pageNum;
-        await RefreshPage(_pageType, _id);
+        await Refresh();
     }
 
     public async Task Refresh()
     {
-        await RefreshPage(_pageType, _id);
+        string title = string.Empty;
+        PageResult<BlogCardVo> result = default;
+
+        switch (PageType)
+        {
+            case PageType.Index:
+                var queryCardPageList = await _blogService.QueryCardPageList(new BlogPageQueryDto()
+                {
+                    PageNum = PageModel.PageNum,
+                    PageSize = PageModel.PageSize
+                });
+                queryCardPageList.Handle(re =>
+                {
+                    result = re;
+                    RefreshUi(title, result);
+                });
+                break;
+            case PageType.Category:
+                if (Id == 0)
+                {
+                    throw new BusinessException("分类不能为空");
+                }
+
+
+                var categoryResult = await _categoryService.GetAsync(new CategoryQueryDto() { Id = Id });
+                categoryResult.Handle(async category =>
+                {
+                    title = $"分类{category.CategoryName}下的文章";
+                    var catResult =
+                        await _blogService.GetBlogPageByCategoryId(Id, PageModel.PageNum, PageModel.PageSize);
+                    catResult.Handle(re =>
+                    {
+                        result = re;
+                        RefreshUi(title, result);
+                    });
+                });
+                break;
+            case PageType.Tag:
+                if (Id == 0)
+                {
+                    throw new BusinessException("标签不能为空");
+                }
+
+                var tagResult = await _tagService.GetAsync(new TagQueryDto() { Id = Id });
+                tagResult.Handle(async tag =>
+                {
+                    title = $"标签{tag.TagName}下的文章";
+                    var tagBlogs = await _blogService.GetBlogPageByTagId(Id, PageModel.PageNum, PageModel.PageSize);
+                    tagBlogs.Handle(re =>
+                    {
+                        result = re;
+                        RefreshUi(title, result);
+                    });
+                });
+                break;
+        }
     }
 }
 

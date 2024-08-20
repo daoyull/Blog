@@ -37,14 +37,6 @@
     </UserControl.Styles>
 
     <Panel>
-        <Button
-            VerticalAlignment="Center"
-            HorizontalAlignment="Left"
-            x:Name="TestButton"
-            ZIndex="10"
-            Content="测试"
-            Click="TestButton_OnClick">
-        </Button>
         <components:TopNavView
             x:Name="TopNavView"
             ZIndex="3" Height="70"
