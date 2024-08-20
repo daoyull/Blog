@@ -9,6 +9,7 @@ using Common.FreeSql;
 using Common.FreeSql.Models;
 using Common.Lib.Ioc;
 using Common.Redis;
+using FreeSql;
 using Markdig.Avalonia.Helper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -57,8 +58,14 @@ sealed class Program
 
         #region Config
 
-        service.AddOptions<FreeSqlOptions>("blog").BindConfiguration("blog_db");
-        service.AddOptions<RedisOptions>("blog").BindConfiguration("blog_redis");
+        // service.AddOptions<FreeSqlOptions>("blog").BindConfiguration("blog_db");
+        service.AddOptions<FreeSqlOptions>("blog").Configure((options =>
+        {
+            var dbPath = Path.Combine(Directory.GetCurrentDirectory(), "Blog.db");
+            options.ConnectionString = $"Data Source={dbPath}; Attachs=Blog.db; Pooling=true;Min Pool Size=1";
+            options.DataType = DataType.Sqlite;
+            options.EnableAutoSyncStructure = false;
+        }));
 
         #endregion
 
@@ -70,7 +77,7 @@ sealed class Program
             builder.RegisterModule<BlogDbModule>();
             builder.RegisterModule<BlogViewModule>();
             builder.AddFreeSql();
-            builder.AddRedis();
+            builder.AddEmptyRedis();
             builder.Populate(service);
         });
         Ioc.Builder();

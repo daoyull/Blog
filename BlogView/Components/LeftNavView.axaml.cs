@@ -30,14 +30,13 @@ public partial class LeftNavView : UserComponent<LeftNavViewModel>
 
     protected override void OnLoaded(RoutedEventArgs e)
     {
-        base.OnLoaded(e);
         if (ViewModel != null)
         {
             ViewModel.OnLeftInformationChanged += HandleOnLeftInformationChanged;
         }
-
         _timer.Interval = TimeSpan.FromMilliseconds(100);
         _timer.Tick += (sender, args) => { ChangeDescText(); };
+        base.OnLoaded(e);
     }
 
     protected override void OnUnloaded(RoutedEventArgs e)

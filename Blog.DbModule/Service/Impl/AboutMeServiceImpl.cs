@@ -1,4 +1,5 @@
-﻿using Blog.DbModule.Models;
+﻿using Blog.DbModule.Helper;
+using Blog.DbModule.Models;
 using Blog.Lib.Service;
 using Common.FreeSql;
 using LanguageExt.Common;
@@ -11,7 +12,7 @@ public class AboutMeServiceImpl : IAboutMeService
 
     public AboutMeServiceImpl(FreeSqlResolver resolver)
     {
-        _db = resolver(BlogDbModule.BlogDatabaseName);
+        _db = resolver.GetDatabase();
     }
 
     public async Task<Result<string>> Desc()

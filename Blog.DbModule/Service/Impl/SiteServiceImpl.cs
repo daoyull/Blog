@@ -1,3 +1,4 @@
+using Blog.DbModule.Constants;
 using Blog.Lib.Entity;
 using Blog.Lib.Service;
 using Common.FreeSql;
@@ -13,30 +14,35 @@ public class SiteInfoServiceImpl : ISiteService
     private readonly IBlogService _blogService;
     private readonly ITagService _tagService;
     private readonly ICategoryService _categoryService;
-    private readonly IDatabase _db;
+    private IDatabase? _redis;
 
-    public SiteInfoServiceImpl(RedisResolver resolver, IInformationService informationService,
+    public SiteInfoServiceImpl(RedisResolver redisResolver, IInformationService informationService,
         IBlogService blogService, ITagService tagService, ICategoryService categoryService)
     {
         _informationService = informationService;
         _blogService = blogService;
         _tagService = tagService;
         _categoryService = categoryService;
-        _db = resolver(BlogDbModule.BlogDatabaseName);
+        redisResolver(BlogDbModule.BlogDatabaseName).IfSucc(db => _redis = db);
     }
 
     public async Task<SiteInfo> GetSiteInfoAsync()
     {
-        var stringGetAsync = await _db.StringGetAsync("blog:site");
-        if (!stringGetAsync.HasValue)
+        if (_redis != null)
         {
-            return await RefreshSiteInfoAsync();
+            var redisValue = await _redis.StringGetAsync(BlogConstant.Site);
+            if (!redisValue.HasValue)
+            {
+                return await RefreshSiteInfoAsync();
+            }
+
+            return JsonConvert.DeserializeObject<SiteInfo>(redisValue.ToString())!;
         }
 
-        return JsonConvert.DeserializeObject<SiteInfo>(stringGetAsync.ToString())!;
+        return await GetSiteInfo();
     }
 
-    public async Task<SiteInfo> RefreshSiteInfoAsync()
+    private async Task<SiteInfo> GetSiteInfo()
     {
         var siteInfo = new SiteInfo();
         (await _informationService.GetBadges()).IfSucc(re => siteInfo.Badges = re);
@@ -46,7 +52,17 @@ public class SiteInfoServiceImpl : ISiteService
         (await _blogService.QueryRandomBlogs(3)).IfSucc(re => siteInfo.RandomBlogList = re);
         (await _tagService.GetCacheListAsync()).IfSucc(re => siteInfo.TagList = re);
         (await _categoryService.GetCacheListAsync()).IfSucc(re => siteInfo.CategoryList = re);
-        await _db.StringSetAsync("blog:site", JsonConvert.SerializeObject(siteInfo));
+        return siteInfo;
+    }
+
+    public async Task<SiteInfo> RefreshSiteInfoAsync()
+    {
+        var siteInfo = await GetSiteInfo();
+        if (_redis != null)
+        {
+            await _redis.StringSetAsync("blog:site", JsonConvert.SerializeObject(siteInfo));
+        }
+
         return siteInfo;
     }
 }

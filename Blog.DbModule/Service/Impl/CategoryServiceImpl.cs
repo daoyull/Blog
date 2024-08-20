@@ -1,22 +1,29 @@
+using Blog.DbModule.Constants;
+using Blog.DbModule.Helper;
 using Blog.DbModule.Models;
 using Blog.Lib.Models;
 using Blog.Lib.Service;
 using Common.FreeSql;
 using Common.Lib.Exceptions;
 using Common.Lib.Models;
+using Common.Redis;
 using FreeSql.Internal.Model;
 using LanguageExt.Common;
 using Mapster;
+using Newtonsoft.Json;
+using StackExchange.Redis;
 
 namespace Blog.DbModule.Service.Impl;
 
 public class CategoryServiceImpl : ICategoryService
 {
-    private readonly IFreeSql _db;
+    private readonly IFreeSql  _db;
+    private IDatabase? _redis;
 
-    public CategoryServiceImpl(FreeSqlResolver resolver)
+    public CategoryServiceImpl(FreeSqlResolver resolver, RedisResolver redisResolver)
     {
-        _db = resolver(BlogDbModule.BlogDatabaseName);
+        _db = resolver.GetDatabase();
+        redisResolver(BlogDbModule.BlogDatabaseName).IfSucc(redis => _redis = redis);
     }
 
     public async Task<Result<CategoryVo>> GetAsync(CategoryQueryDto query)
@@ -98,6 +105,24 @@ public class CategoryServiceImpl : ICategoryService
     }
 
     public async Task<Result<List<CategoryCacheVo>>> GetCacheListAsync()
+    {
+        if (_redis != null)
+        {
+            var redisValue = await _redis.StringGetAsync(BlogConstant.CategoryCache);
+            if (!redisValue.HasValue)
+            {
+                var list = await GetAllCacheList();
+                await _redis.StringSetAsync(BlogConstant.CategoryCache, JsonConvert.SerializeObject(list));
+                return list;
+            }
+
+            return JsonConvert.DeserializeObject<List<CategoryCacheVo>>(redisValue.ToString())!;
+        }
+
+        return await GetAllCacheList();
+    }
+
+    private async Task<List<CategoryCacheVo>> GetAllCacheList()
     {
         return await _db.Select<CategoryPo>()
             .ToListAsync()

@@ -1,3 +1,4 @@
+using Blog.DbModule.Helper;
 using Blog.DbModule.Models;
 using Blog.Lib.Entity;
 using Blog.Lib.Models;
@@ -13,11 +14,11 @@ namespace Blog.DbModule.Service.Impl;
 
 public class BlogServiceImpl : IBlogService
 {
-    private readonly IFreeSql _db;
+    private readonly IFreeSql  _db;
 
     public BlogServiceImpl(FreeSqlResolver resolver)
     {
-        _db = resolver(BlogDbModule.BlogDatabaseName);
+        _db = resolver.GetDatabase();
     }
 
     public async Task<Result<PageResult<BlogVo>>> GetPageAsync(BlogPageQueryDto query, bool showPass = false)
@@ -45,6 +46,7 @@ public class BlogServiceImpl : IBlogService
         var pageInfo = query.Adapt<BasePagingInfo>();
         var list = await _db.Select<BlogPo>()
             .Where(a => a.Type == 1)
+            .OrderByDescending(a=>a.CreateTime)
             .LeftJoin(a => a.Category.Id == a.CategoryId)
             .IncludeMany(a => a.Tags)
             .Page(pageInfo)
@@ -129,6 +131,7 @@ public class BlogServiceImpl : IBlogService
             .ToListAsync(it => it.BlogId);
         var list = await _db.Select<BlogPo>()
             .Where(a => a.Type == 1 && blogIds.Contains(a.Id))
+            .OrderByDescending(a=>a.CreateTime)
             .LeftJoin(a => a.Category.Id == a.CategoryId)
             .IncludeMany(a => a.Tags)
             .Page(pageInfo)
@@ -146,6 +149,7 @@ public class BlogServiceImpl : IBlogService
         };
         var list = await _db.Select<BlogPo>()
             .Where(a => a.Type == 1 && a.CategoryId == categoryId)
+            .OrderByDescending(a=>a.CreateTime)
             .LeftJoin(a => a.Category.Id == a.CategoryId)
             .IncludeMany(a => a.Tags)
             .Page(pageInfo)

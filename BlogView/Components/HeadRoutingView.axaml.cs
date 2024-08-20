@@ -37,11 +37,11 @@ public partial class HeadRoutingView : UserControl
 
             var offsetY = _scrollViewerService.ScrollViewer.Offset.Y + offset.Value -
                           headingRouter.Control.Bounds.Height;
-            _scrollViewerService.ChangeOffset(offsetY,400);
+            _scrollViewerService.ChangeOffset(offsetY, 400);
         }
     }
 
-    public void HandleMarkViewLoaded(object? sender,List<HeadingRouter> obj)
+    public void HandleMarkViewLoaded(object? sender, List<HeadingRouter> obj)
     {
         _headingRouters = new List<RouterItem>(obj.Select(it => new RouterItem
         {
@@ -96,7 +96,8 @@ public partial class HeadRoutingView : UserControl
         #region 定位高亮控件，Tree展开
 
         // 正在动画时暂停定位
-        if (!_scrollViewerService.IsAnimation)
+        if (!_scrollViewerService.IsAnimation &&
+            _scrollViewerService.ScrollViewer.Bounds.Height - (locationPoint - 80) > 0)
         {
             RouterItem? router = null;
             foreach (var headingRouter in _headingRouters)

@@ -1,23 +1,30 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Blog.DbModule.Constants;
 using Blog.DbModule.Models;
 using Blog.Lib.Models;
 using Blog.Lib.Service;
 using Common.FreeSql;
 using Common.Lib.Exceptions;
 using Common.Lib.Models;
+using Common.Redis;
 using FreeSql.Internal.Model;
 using LanguageExt.Common;
 using Mapster;
+using StackExchange.Redis;
+using Blog.DbModule.Helper;
+using Newtonsoft.Json;
 
 namespace Blog.DbModule.Service.Impl;
 
 public class TagServiceImpl : ITagService
 {
-    private IFreeSql _db;
+    private readonly IFreeSql _db;
+    private IDatabase? _redis;
 
-    public TagServiceImpl(FreeSqlResolver resolver)
+    public TagServiceImpl(FreeSqlResolver resolver, RedisResolver redisResolver)
     {
-        _db = resolver(BlogDbModule.BlogDatabaseName);
+        _db = resolver.GetDatabase();
+        redisResolver(BlogDbModule.BlogDatabaseName).IfSucc(db => _redis = db);
     }
 
     public async Task<Result<int>> AddAsync(TagAddDto tag)
@@ -89,6 +96,24 @@ public class TagServiceImpl : ITagService
     }
 
     public async Task<Result<List<TagCacheVo>>> GetCacheListAsync()
+    {
+        if (_redis != null)
+        {
+            var redisValue = await _redis.StringGetAsync(BlogConstant.Tag);
+            if (!redisValue.HasValue)
+            {
+                var result = await GetCache();
+                await _redis.StringSetAsync(BlogConstant.Tag, JsonConvert.SerializeObject(result));
+                return result;
+            }
+
+            return JsonConvert.DeserializeObject<List<TagCacheVo>>(redisValue.ToString())!;
+        }
+
+        return await GetCache();
+    }
+
+    private async Task<List<TagCacheVo>> GetCache()
     {
         return await _db.Select<TagPo>()
             .ToListAsync()

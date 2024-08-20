@@ -10,6 +10,7 @@ using Common.Redis;
 using LanguageExt.Common;
 using Newtonsoft.Json;
 using StackExchange.Redis;
+using Blog.DbModule.Helper;
 
 namespace Blog.DbModule.Service.Impl;
 
@@ -17,13 +18,13 @@ public class UserServiceImpl : IUserService
 {
     private readonly IJwtService _jwtService;
     private readonly IFreeSql _db;
-    private readonly IDatabase _redis;
+    private IDatabase? _redis;
 
     public UserServiceImpl(FreeSqlResolver resolver, IJwtService jwtService, RedisResolver redisResolver)
     {
         _jwtService = jwtService;
-        _db = resolver(BlogDbModule.BlogDatabaseName);
-        _redis = redisResolver(BlogDbModule.BlogDatabaseName);
+        _db = resolver.GetDatabase();
+        redisResolver(BlogDbModule.BlogDatabaseName).IfSucc(db => _redis = db);
     }
 
     public async Task<Result<Jwt>> Login(UserLoginDto user)
@@ -54,7 +55,8 @@ public class UserServiceImpl : IUserService
             };
             jwt.User = userVo;
 
-            await _redis.StringSetAsync(BlogConstant.Token + jwt.Guid, JsonConvert.SerializeObject(userVo), TimeSpan.FromHours(6));
+            await _redis.StringSetAsync(BlogConstant.Token + jwt.Guid, JsonConvert.SerializeObject(userVo),
+                TimeSpan.FromHours(6));
         }
 
         jwtResult.IfSucc(SetRedis);

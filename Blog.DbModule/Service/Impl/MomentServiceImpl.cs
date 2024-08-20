@@ -6,16 +6,16 @@ using Common.Lib.Models;
 using FreeSql.Internal.Model;
 using LanguageExt.Common;
 using Mapster;
-
+using Blog.DbModule.Helper;
 namespace Blog.DbModule.Service.Impl;
 
 public class MomentServiceImpl : IMomentService
 {
-    private readonly IFreeSql _db;
+    private readonly IFreeSql  _db;
 
     public MomentServiceImpl(FreeSqlResolver resolver)
     {
-        _db = resolver(BlogDbModule.BlogDatabaseName);
+        _db = resolver.GetDatabase();
     }
 
     public async Task<Result<PageResult<MomentVo>>> GetMomentPageList(MomentPageQueryDto query)
@@ -23,6 +23,7 @@ public class MomentServiceImpl : IMomentService
         var pagingInfo = query.Adapt<BasePagingInfo>();
         var list = await _db.Select<MomentPo>()
             .Page(pagingInfo)
+            .OrderByDescending(it=>it.CreateTime)
             .ToListAsync()
             .MapperTo<List<MomentPo>, List<MomentVo>>();
         return new PageResult<MomentVo>(pagingInfo.Count, list);

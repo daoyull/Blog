@@ -10,7 +10,6 @@
     <ItemGroup>
       <ProjectReference Include="..\Common\src\Common.Mvvm\Common.Mvvm.csproj" />
       <ProjectReference Include="..\Markdig.Avalonia\Markdig.Avalonia\Markdig.Avalonia.csproj" />
-      <ProjectReference Include="..\Markdown.Lib\Markdown.Lib.csproj" />
     </ItemGroup>
 
     <ItemGroup>

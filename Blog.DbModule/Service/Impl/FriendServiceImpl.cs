@@ -7,16 +7,16 @@ using Common.Lib.Models;
 using FreeSql.Internal.Model;
 using LanguageExt.Common;
 using Mapster;
-
+using Blog.DbModule.Helper;
 namespace Blog.DbModule.Service.Impl;
 
 public class FriendServiceImpl : IFriendService
 {
-    private readonly IFreeSql _db;
+    private readonly IFreeSql  _db;
 
     public FriendServiceImpl(FreeSqlResolver resolver)
     {
-        _db = resolver(BlogDbModule.BlogDatabaseName);
+        _db = resolver.GetDatabase();
     }
 
 

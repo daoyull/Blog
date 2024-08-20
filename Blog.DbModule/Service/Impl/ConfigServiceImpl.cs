@@ -1,3 +1,4 @@
+using Blog.DbModule.Helper;
 using Blog.DbModule.Models;
 using Blog.Lib.Service;
 using Common.FreeSql;
@@ -10,11 +11,11 @@ namespace Blog.DbModule.Service.Impl;
 
 public class ConfigServiceImpl : IConfigService
 {
-    private readonly IFreeSql _db;
+    private readonly IFreeSql  _db;
 
     public ConfigServiceImpl(FreeSqlResolver resolver)
     {
-        _db = resolver(BlogDbModule.BlogDatabaseName);
+        _db = resolver.GetDatabase();
     }
 
     public async Task<Result<T>> GetJsonConfig<T>(string key)
@@ -22,7 +23,7 @@ public class ConfigServiceImpl : IConfigService
         var t = await _db.Select<ConfigPo>()
             .Where(it => it.ConfigName == key)
             .ToOneAsync();
-        
+
         if (t == null)
         {
             return new Result<T>(new BusinessException("未定义的配置"));
