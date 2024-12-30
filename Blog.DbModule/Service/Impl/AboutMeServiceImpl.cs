@@ -2,7 +2,7 @@
 using Blog.DbModule.Models;
 using Blog.Lib.Service;
 using Common.FreeSql;
-using LanguageExt.Common;
+
 
 namespace Blog.DbModule.Service.Impl;
 
@@ -15,7 +15,7 @@ public class AboutMeServiceImpl : IAboutMeService
         _db = resolver.GetDatabase();
     }
 
-    public async Task<Result<string>> Desc()
+    public async Task<string> Desc()
     {
         var blog = await _db.Select<BlogContentPo>()
             .Where(it => it.Type == 3)

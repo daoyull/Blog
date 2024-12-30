@@ -1,7 +1,7 @@
 using Blog.Lib.Models;
 using Blog.Lib.Service;
 using BlogView.Helpers;
-using Common.Lib.Plugins;
+
 using Common.Lib.Service;
 using Common.Mvvm.Abstracts;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -19,7 +19,7 @@ public partial class FriendViewModel : BaseViewModel, IRefresh
     public FriendViewModel(IFriendService friendService)
     {
         _friendService = friendService;
-        Plugins.Add(new RefreshPlugin());
+        
     }
 
     public async Task Refresh()

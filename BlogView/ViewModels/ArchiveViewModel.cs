@@ -4,7 +4,7 @@ using Blog.Lib.Service;
 using BlogView.Helpers;
 using BlogView.Service;
 using Common.Lib.Ioc;
-using Common.Lib.Plugins;
+
 using Common.Lib.Service;
 using Common.Mvvm.Abstracts;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -21,7 +21,7 @@ public partial class ArchiveViewModel : BaseViewModel, IRefresh
     public ArchiveViewModel(IBlogService blogService)
     {
         _blogService = blogService;
-        Plugins.Add(new RefreshPlugin());
+       
     }
 
     [RelayCommand]

@@ -1,14 +1,12 @@
-<abstracts:UserComponent
-    x:TypeArguments="viewModels:LeftNavViewModel" xmlns="https://github.com/avaloniaui"
+<UserControl
+    xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ic="clr-namespace:AvaloniaBlog.Lib.Controls;assembly=AvaloniaBlog.Lib"
     xmlns:viewModels="clr-namespace:BlogView.ViewModels"
-    xmlns:abstracts="clr-namespace:Common.Avalonia.Abstracts;assembly=Common.Avalonia"
     xmlns:entity="clr-namespace:Blog.Lib.Entity;assembly=Blog.Lib"
     xmlns:themes="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
-    xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
     mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="600"
     x:Class="BlogView.Components.LeftNavView"
     x:DataType="viewModels:LeftNavViewModel">
@@ -112,4 +110,4 @@
             </StackPanel>
         </Border>
     </StackPanel>
-</abstracts:UserComponent>
+</UserControl>

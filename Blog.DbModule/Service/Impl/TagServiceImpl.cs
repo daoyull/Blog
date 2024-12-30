@@ -8,7 +8,7 @@ using Common.Lib.Exceptions;
 using Common.Lib.Models;
 using Common.Redis;
 using FreeSql.Internal.Model;
-using LanguageExt.Common;
+
 using Mapster;
 using StackExchange.Redis;
 using Blog.DbModule.Helper;
@@ -24,29 +24,29 @@ public class TagServiceImpl : ITagService
     public TagServiceImpl(FreeSqlResolver resolver, RedisResolver redisResolver)
     {
         _db = resolver.GetDatabase();
-        redisResolver(BlogDbModule.BlogDatabaseName).IfSucc(db => _redis = db);
+        _redis = redisResolver(BlogDbModule.BlogDatabaseName);
     }
 
-    public async Task<Result<int>> AddAsync(TagAddDto tag)
+    public async Task<int> AddAsync(TagAddDto tag)
     {
         // 业务校验
         if (await _db.Select<TagPo>().AnyAsync(it => it.TagName == tag.TagName))
         {
-            return new Result<int>(new BusinessException("标签名称重复"));
+            throw new BusinessException("标签名称重复");
         }
 
         var tagPo = tag.Adapt<TagPo>();
         return await _db.Insert(tagPo).ExecuteAffrowsAsync();
     }
 
-    public async Task<Result<int>> DeleteAsync(long tagId)
+    public async Task<int> DeleteAsync(long tagId)
     {
         var anyAsync = await _db.Select<RelBlogTagPo>()
             .Where(it => tagId == it.TagId)
             .AnyAsync();
         if (anyAsync)
         {
-            return new Result<int>(new BusinessException("存在已使用的标签，无法删除"));
+            throw new BusinessException("存在已使用的标签，无法删除");
         }
 
         return await _db.Delete<TagPo>()
@@ -54,7 +54,7 @@ public class TagServiceImpl : ITagService
             .ExecuteAffrowsAsync();
     }
 
-    public async Task<Result<int>> EditAsync(TagEditDto tag)
+    public async Task<int> EditAsync(TagEditDto tag)
     {
         // 
         var anyAsync = await _db.Select<TagPo>()
@@ -62,7 +62,7 @@ public class TagServiceImpl : ITagService
             .AnyAsync(it => it.TagName == tag.TagName);
         if (anyAsync)
         {
-            return new Result<int>(new BusinessException("标签名称重复"));
+            throw new BusinessException("标签名称重复");
         }
 
         var tagPo = tag.Adapt<TagPo>();
@@ -72,7 +72,7 @@ public class TagServiceImpl : ITagService
             .ExecuteAffrowsAsync();
     }
 
-    public async Task<Result<TagVo>> GetAsync(TagQueryDto query)
+    public async Task<TagVo> GetAsync(TagQueryDto query)
     {
         var tagPo = await _db.Select<TagPo>()
             .WhereIf(query.Id != null, it => it.Id == query.Id)
@@ -82,7 +82,7 @@ public class TagServiceImpl : ITagService
         return tagVo;
     }
 
-    public async Task<Result<PageResult<TagVo>>> GetPageAsync(TagPageQueryDto query)
+    public async Task<PageResult<TagVo>> GetPageAsync(TagPageQueryDto query)
     {
         var pagingInfo = query.Adapt<BasePagingInfo>();
         var pageList = await _db.Select<TagPo>()
@@ -95,7 +95,7 @@ public class TagServiceImpl : ITagService
         return new PageResult<TagVo>(pagingInfo.Count, pageList);
     }
 
-    public async Task<Result<List<TagCacheVo>>> GetCacheListAsync()
+    public async Task<List<TagCacheVo>> GetCacheListAsync()
     {
         if (_redis != null)
         {
@@ -120,7 +120,7 @@ public class TagServiceImpl : ITagService
             .MapperTo<List<TagPo>, List<TagCacheVo>>();
     }
 
-    public async ValueTask<Result<List<CountChart>>> GetTagBlogNum()
+    public async ValueTask<List<CountChart>> GetTagBlogNum()
     {
         return await _db.Select<RelBlogTagPo, TagPo>()
             .InnerJoin((rel, tag) => rel.TagId == tag.Id)
@@ -133,7 +133,7 @@ public class TagServiceImpl : ITagService
             });
     }
 
-    public async Task<Result<long>> GetIdByNameAsync(string tagName)
+    public async Task<long> GetIdByNameAsync(string tagName)
     {
         var categoryPo = await _db.Select<TagPo>()
             .Where(it => it.TagName == tagName)
@@ -141,14 +141,14 @@ public class TagServiceImpl : ITagService
         return categoryPo?.Id ?? 0;
     }
 
-    public async Task<Result<int>> DeleteListAsync(List<long> toList)
+    public async Task<int> DeleteListAsync(List<long> toList)
     {
         var anyAsync = await _db.Select<RelBlogTagPo>()
             .Where(it => toList.Contains(it.TagId))
             .AnyAsync();
         if (anyAsync)
         {
-            return new Result<int>(new BusinessException("存在已使用的标签，无法删除"));
+            throw new BusinessException("存在已使用的标签，无法删除");
         }
 
         using var uow = _db.CreateUnitOfWork();

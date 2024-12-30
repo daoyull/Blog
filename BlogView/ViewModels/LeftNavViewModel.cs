@@ -1,6 +1,6 @@
 ﻿using Blog.Lib.Entity;
 using Blog.Lib.Service;
-using Common.Lib.Plugins;
+
 using Common.Lib.Service;
 using Common.Mvvm.Abstracts;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -12,7 +12,7 @@ public partial class LeftNavViewModel : BaseViewModel, IRefresh
     public LeftNavViewModel(IInformationService informationService)
     {
         _informationService = informationService;
-        Plugins.Add(new RefreshPlugin());
+        
     }
 
 

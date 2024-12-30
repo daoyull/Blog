@@ -1,7 +1,5 @@
 ﻿
 
-using LanguageExt.Common;
-
 namespace Blog.Lib.Service;
 
 public interface IAboutMeService
@@ -10,5 +8,5 @@ public interface IAboutMeService
     /// 查询关于我的说明
     /// </summary>
     /// <returns></returns>
-    Task<Result<string>> Desc();
+    Task<string> Desc();
 }

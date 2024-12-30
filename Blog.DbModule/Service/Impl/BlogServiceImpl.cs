@@ -7,7 +7,7 @@ using Common.FreeSql;
 using Common.Lib.Helpers;
 using Common.Lib.Models;
 using FreeSql.Internal.Model;
-using LanguageExt.Common;
+
 using Mapster;
 
 namespace Blog.DbModule.Service.Impl;
@@ -20,8 +20,7 @@ public class BlogServiceImpl : IBlogService
     {
         _db = resolver.GetDatabase();
     }
-
-    public async Task<Result<PageResult<BlogVo>>> GetPageAsync(BlogPageQueryDto query, bool showPass = false)
+    public async Task<PageResult<BlogVo>> GetPageAsync(BlogPageQueryDto query, bool showPass = false)
     {
         var pageInfo = query.Adapt<BasePagingInfo>();
         var list = await _db.Select<BlogPo>()
@@ -41,7 +40,7 @@ public class BlogServiceImpl : IBlogService
         return new PageResult<BlogVo>(pageInfo.Count, list);
     }
 
-    public async Task<Result<PageResult<BlogCardVo>>> QueryCardPageList(BlogPageQueryDto query)
+    public async Task<PageResult<BlogCardVo>> QueryCardPageList(BlogPageQueryDto query)
     {
         var pageInfo = query.Adapt<BasePagingInfo>();
         var list = await _db.Select<BlogPo>()
@@ -55,7 +54,7 @@ public class BlogServiceImpl : IBlogService
         return new PageResult<BlogCardVo>(pageInfo.Count, list);
     }
 
-    public async Task<Result<List<Archive>>> QueryArchiveList()
+    public async Task<List<Archive>> QueryArchiveList()
     {
         var pos = await _db.Select<BlogPo>()
             .Where(blog => blog.Type == 1)
@@ -103,7 +102,7 @@ public class BlogServiceImpl : IBlogService
         return res;
     }
 
-    public async Task<Result<BlogCardVo>> GetBlogContentAsync(long blogId, bool showPass = false)
+    public async Task<BlogCardVo> GetBlogContentAsync(long blogId, bool showPass = false)
     {
         var blogCardVo = await _db.Select<BlogContentPo>()
             .Where(a => a.Type == 1 && a.Id == blogId)
@@ -119,7 +118,7 @@ public class BlogServiceImpl : IBlogService
         return blogCardVo;
     }
 
-    public async Task<Result<PageResult<BlogCardVo>>> GetBlogPageByTagId(long tagId, int pageNum, int pageSize)
+    public async Task<PageResult<BlogCardVo>> GetBlogPageByTagId(long tagId, int pageNum, int pageSize)
     {
         var pageInfo = new BasePagingInfo()
         {
@@ -139,7 +138,7 @@ public class BlogServiceImpl : IBlogService
         return new PageResult<BlogCardVo>(pageInfo.Count, list.Adapt<List<BlogCardVo>>());
     }
 
-    public async Task<Result<PageResult<BlogCardVo>>> GetBlogPageByCategoryId(long categoryId, int pageNum,
+    public async Task<PageResult<BlogCardVo>> GetBlogPageByCategoryId(long categoryId, int pageNum,
         int pageSize)
     {
         var pageInfo = new BasePagingInfo()
@@ -157,7 +156,7 @@ public class BlogServiceImpl : IBlogService
         return new PageResult<BlogCardVo>(pageInfo.Count, list.Adapt<List<BlogCardVo>>());
     }
 
-    public async Task<Result<List<NewBlog>>> QueryNewBlog(int num)
+    public async Task<List<NewBlog>> QueryNewBlog(int num)
     {
         return await _db.Select<BlogPo>()
             .Where(blog => blog.Type == 1)
@@ -170,7 +169,7 @@ public class BlogServiceImpl : IBlogService
             });
     }
 
-    public async Task<Result<List<RandomBlog>>> QueryRandomBlogs(int num)
+    public async Task<List<RandomBlog>> QueryRandomBlogs(int num)
     {
         return await _db.Select<BlogPo>()
             .Where(blog => blog.Type == 1)
@@ -185,7 +184,7 @@ public class BlogServiceImpl : IBlogService
             });
     }
 
-    public async Task<Result<int>> AddAsync(BlogAddDto model)
+    public async Task<int> AddAsync(BlogAddDto model)
     {
         var po = model.Adapt<BlogContentPo>();
         var id = IdHelper.SnowId;
@@ -203,7 +202,7 @@ public class BlogServiceImpl : IBlogService
         return rows;
     }
 
-    public async Task<Result<int>> EditAsync(BlogEditDto model)
+    public async Task<int> EditAsync(BlogEditDto model)
     {
         var po = model.Adapt<BlogContentPo>();
         var rel = model.TagIds.Select(it => new RelBlogTagPo
@@ -219,7 +218,7 @@ public class BlogServiceImpl : IBlogService
         return rows;
     }
 
-    public async Task<Result<int>> DeleteAsync(long argId)
+    public async Task<int> DeleteAsync(long argId)
     {
         using var uow = _db.CreateUnitOfWork();
         var rows = await uow.Orm.Delete<BlogContentPo>().Where(it => it.Id == argId).ExecuteAffrowsAsync();
@@ -228,7 +227,7 @@ public class BlogServiceImpl : IBlogService
         return rows;
     }
 
-    public async Task<Result<int>> DeleteListAsync(List<long> toList)
+    public async Task<int> DeleteListAsync(List<long> toList)
     {
         using var uow = _db.CreateUnitOfWork();
         var rows = await uow.Orm.Delete<BlogContentPo>().Where(it => toList.Contains(it.Id)).ExecuteAffrowsAsync();
@@ -237,7 +236,7 @@ public class BlogServiceImpl : IBlogService
         return rows;
     }
 
-    public async Task<Result<List<SearchBlogResult>>> GetSearchBlog(string query)
+    public async Task<List<SearchBlogResult>> GetSearchBlog(string query)
     {
         var list = await _db.Select<BlogContentPo>()
             .Where(it => it.Title.Contains(query) || (it.Content ?? "").Contains(query))
@@ -262,7 +261,7 @@ public class BlogServiceImpl : IBlogService
         }).ToList();
     }
 
-    public async Task<Result<bool>> TopAsync(long id, bool top)
+    public async Task<bool> TopAsync(long id, bool top)
     {
         var rows = await _db.Update<BlogPo>()
             .Set(it => it.IsTop, top)
@@ -271,7 +270,7 @@ public class BlogServiceImpl : IBlogService
         return rows == 1;
     }
 
-    public async Task<Result<bool>> RecommendAsync(long id, bool recommend)
+    public async Task<bool> RecommendAsync(long id, bool recommend)
     {
         var rows = await _db.Update<BlogPo>()
             .Set(it => it.IsRecommend, recommend)
@@ -280,7 +279,7 @@ public class BlogServiceImpl : IBlogService
         return rows == 1;
     }
 
-    public async Task<Result<bool>> EditVisibility(long id, BlogEditVisibilityDto blog)
+    public async Task<bool> EditVisibility(long id, BlogEditVisibilityDto blog)
     {
         var rows = await _db.Update<BlogPo>()
             .Set(it => it.IsPublished, blog.IsPublished)

@@ -5,7 +5,7 @@ using Common.FreeSql;
 using Common.Lib.Exceptions;
 using Common.Lib.Models;
 using FreeSql.Internal.Model;
-using LanguageExt.Common;
+
 using Mapster;
 using Blog.DbModule.Helper;
 namespace Blog.DbModule.Service.Impl;
@@ -20,7 +20,7 @@ public class FriendServiceImpl : IFriendService
     }
 
 
-    public async Task<Result<List<FriendVo>>> GetFriendVoList(int count)
+    public async Task<List<FriendVo>> GetFriendVoList(int count)
     {
         return await _db.Select<FriendPo>()
             .OrderByRandom()
@@ -29,7 +29,7 @@ public class FriendServiceImpl : IFriendService
             .MapperTo<List<FriendPo>, List<FriendVo>>();
     }
 
-    public async Task<Result<FriendContentVo>> GetDesc()
+    public async Task<FriendContentVo> GetDesc()
     {
         var blog = await _db.Select<BlogContentPo>()
             .Where(it => it.Type == 2)
@@ -42,7 +42,7 @@ public class FriendServiceImpl : IFriendService
         };
     }
 
-    public async Task<Result<PageResult<FriendVo>>> GetFriendPage(FriendQueryDto friend)
+    public async Task<PageResult<FriendVo>> GetFriendPage(FriendQueryDto friend)
     {
         var pageInfo = friend.Adapt<BasePagingInfo>();
         var pages = await _db.Select<FriendPo>()
@@ -53,7 +53,7 @@ public class FriendServiceImpl : IFriendService
         return new PageResult<FriendVo>(pageInfo.Count, pages);
     }
 
-    public async Task<Result<bool>> Published(long id, bool published)
+    public async Task<bool> Published(long id, bool published)
     {
         var rows = await _db.Update<FriendPo>()
             .Set(it => it.IsPublished, published)
@@ -62,14 +62,14 @@ public class FriendServiceImpl : IFriendService
         return rows == 1;
     }
 
-    public async Task<Result<int>> AddAsync(FriendAddDto friend)
+    public async Task<int> AddAsync(FriendAddDto friend)
     {
         var friendPo = friend.Adapt<FriendPo>();
         var rows = await _db.Insert(friendPo).ExecuteAffrowsAsync();
         return rows;
     }
 
-    public async Task<Result<int>> EditAsync(FriendEditDto friend)
+    public async Task<int> EditAsync(FriendEditDto friend)
     {
         var friendPo = friend.Adapt<FriendPo>();
         var rows = await _db.Update<FriendPo>()
@@ -78,7 +78,7 @@ public class FriendServiceImpl : IFriendService
         return rows;
     }
 
-    public async Task<Result<int>> EditFriendInfoContent(string content)
+    public async Task<int> EditFriendInfoContent(string content)
     {
         var blogContentPo = new BlogContentPo()
         {
@@ -96,14 +96,14 @@ public class FriendServiceImpl : IFriendService
         return rows;
     }
 
-    public async Task<Result<bool>> EditCommentEnabled(bool commentEnabled)
+    public async Task<bool> EditCommentEnabled(bool commentEnabled)
     {
         var id = await _db.Select<BlogPo>().OrderByDescending(it => it.CreateTime)
             .Page(new BasePagingInfo() { PageNumber = 1, PageSize = 1 })
             .ToOneAsync(it => it.Id);
         if (id == 0)
         {
-            return new Result<bool>(new BusinessException("未找到友人帐内容"));
+            throw new BusinessException("未找到友人帐内容");
         }
 
         var rows = await _db.Update<BlogPo>()

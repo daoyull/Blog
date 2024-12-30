@@ -7,7 +7,6 @@ using Common.FreeSql;
 using Common.Lib.Exceptions;
 using Common.Lib.Helpers;
 using Common.Redis;
-using LanguageExt.Common;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using Blog.DbModule.Helper;
@@ -18,16 +17,16 @@ public class UserServiceImpl : IUserService
 {
     private readonly IJwtService _jwtService;
     private readonly IFreeSql _db;
-    private IDatabase? _redis;
+    private IDatabase _redis;
 
     public UserServiceImpl(FreeSqlResolver resolver, IJwtService jwtService, RedisResolver redisResolver)
     {
         _jwtService = jwtService;
         _db = resolver.GetDatabase();
-        redisResolver(BlogDbModule.BlogDatabaseName).IfSucc(db => _redis = db);
+        _redis = redisResolver(BlogDbModule.BlogDatabaseName);
     }
 
-    public async Task<Result<Jwt>> Login(UserLoginDto user)
+    public async Task<Jwt> Login(UserLoginDto user)
     {
         var pass = Md5Helper.Md5(user.Password);
         var userPo = await _db.Select<UserPo>()
@@ -59,7 +58,7 @@ public class UserServiceImpl : IUserService
                 TimeSpan.FromHours(6));
         }
 
-        jwtResult.IfSucc(SetRedis);
+        SetRedis(jwtResult);
 
         return jwtResult;
     }

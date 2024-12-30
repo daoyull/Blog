@@ -23,7 +23,7 @@ public class SiteInfoServiceImpl : ISiteService
         _blogService = blogService;
         _tagService = tagService;
         _categoryService = categoryService;
-        redisResolver(BlogDbModule.BlogDatabaseName).IfSucc(db => _redis = db);
+        _redis = redisResolver(BlogDbModule.BlogDatabaseName);
     }
 
     public async Task<SiteInfo> GetSiteInfoAsync()
@@ -45,13 +45,13 @@ public class SiteInfoServiceImpl : ISiteService
     private async Task<SiteInfo> GetSiteInfo()
     {
         var siteInfo = new SiteInfo();
-        (await _informationService.GetBadges()).IfSucc(re => siteInfo.Badges = re);
-        (await _informationService.GetSiteInfo()).IfSucc(re => siteInfo.FotterSiteInfo = re);
-        (await _informationService.GetLeftInformation()).IfSucc(re => siteInfo.Introduction = re);
-        (await _blogService.QueryNewBlog(5)).IfSucc(re => siteInfo.NewBlogList = re);
-        (await _blogService.QueryRandomBlogs(3)).IfSucc(re => siteInfo.RandomBlogList = re);
-        (await _tagService.GetCacheListAsync()).IfSucc(re => siteInfo.TagList = re);
-        (await _categoryService.GetCacheListAsync()).IfSucc(re => siteInfo.CategoryList = re);
+        siteInfo.Badges = await _informationService.GetBadges();
+        siteInfo.FotterSiteInfo = await _informationService.GetSiteInfo();
+        siteInfo.Introduction = await _informationService.GetLeftInformation();
+        siteInfo.NewBlogList = await _blogService.QueryNewBlog(5);
+        siteInfo.RandomBlogList = await _blogService.QueryRandomBlogs(3);
+        siteInfo.TagList = await _tagService.GetCacheListAsync();
+        siteInfo.CategoryList = await _categoryService.GetCacheListAsync();
         return siteInfo;
     }
 

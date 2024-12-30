@@ -5,7 +5,7 @@ using Blog.Lib.Models;
 using Blog.Lib.Service;
 using Common.Lib.Exceptions;
 using Common.Lib.Models;
-using Common.Lib.Plugins;
+
 using Common.Lib.Service;
 using Common.Mvvm.Abstracts;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -37,7 +37,7 @@ public partial class BlogCardListViewModel : BaseViewModel, IRefresh
         _blogService = blogService;
         _categoryService = categoryService;
         _tagService = tagService;
-        PluginBuilder.AddPlugin<RefreshPlugin>();
+        
     }
 
     public PageType PageType { get; set; }
@@ -71,7 +71,7 @@ public partial class BlogCardListViewModel : BaseViewModel, IRefresh
     public async Task Refresh()
     {
         string title = string.Empty;
-        PageResult<BlogCardVo> result = default;
+        PageResult<BlogCardVo> pageResult = default;
 
         switch (PageType)
         {
@@ -83,8 +83,8 @@ public partial class BlogCardListViewModel : BaseViewModel, IRefresh
                 });
                 queryCardPageList.Handle(re =>
                 {
-                    result = re;
-                    RefreshUi(title, result);
+                    pageResult = re;
+                    RefreshUi(title, pageResult);
                 });
                 break;
             case PageType.Category:
@@ -102,8 +102,8 @@ public partial class BlogCardListViewModel : BaseViewModel, IRefresh
                         await _blogService.GetBlogPageByCategoryId(Id, PageModel.PageNum, PageModel.PageSize);
                     catResult.Handle(re =>
                     {
-                        result = re;
-                        RefreshUi(title, result);
+                        pageResult = re;
+                        RefreshUi(title, pageResult);
                     });
                 });
                 break;
@@ -120,8 +120,8 @@ public partial class BlogCardListViewModel : BaseViewModel, IRefresh
                     var tagBlogs = await _blogService.GetBlogPageByTagId(Id, PageModel.PageNum, PageModel.PageSize);
                     tagBlogs.Handle(re =>
                     {
-                        result = re;
-                        RefreshUi(title, result);
+                        pageResult = re;
+                        RefreshUi(title, pageResult);
                     });
                 });
                 break;

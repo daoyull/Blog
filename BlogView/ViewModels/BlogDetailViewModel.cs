@@ -1,6 +1,6 @@
 using Blog.Lib.Models;
 using Blog.Lib.Service;
-using Common.Lib.Plugins;
+
 using Common.Lib.Service;
 using Common.Mvvm.Abstracts;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -19,7 +19,7 @@ public partial class BlogDetailViewModel : BaseViewModel, IRefresh
     public BlogDetailViewModel(IBlogService blogService)
     {
         _blogService = blogService;
-        PluginBuilder.AddPlugin<RefreshPlugin>();
+        
     }
 
     public long BlogId { get; set; }

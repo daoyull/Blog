@@ -1,6 +1,4 @@
-﻿using LanguageExt.Common;
-
-namespace BlogView.Helpers;
+﻿namespace BlogView.Helpers;
 
 public static class ResultHelper
 {
@@ -9,12 +7,8 @@ public static class ResultHelper
         return default;
     }
 
-    public static void Handle<T>(this Result<T> result, Action<T> action)
+    public static void Handle<T>(this T result, Action<T> action)
     {
-        var match = result.Match<object?>(r =>
-        {
-            action(r);
-            return default;
-        }, HandleException);
+        action.Invoke(result);
     }
 }

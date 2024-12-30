@@ -1,14 +1,16 @@
+using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using Blog.Lib.Entity;
 using BlogView.Helpers;
 using BlogView.ViewModels;
-using Common.Avalonia.Abstracts;
+using Common.Lib.Ioc;
+
 
 namespace BlogView.Components;
 
-public partial class LeftNavView : UserComponent<LeftNavViewModel>
+public partial class LeftNavView : UserControl
 {
     private string[] _rollText = { "" };
     private int _index = 0;
@@ -23,17 +25,20 @@ public partial class LeftNavView : UserComponent<LeftNavViewModel>
     private const int RandomCharCount = 5;
     private readonly List<Run> _runs = new();
 
+    public LeftNavViewModel ViewModel { get; } = Ioc.Resolve<LeftNavViewModel>();
     public LeftNavView()
     {
         InitializeComponent();
+        DataContext = ViewModel;
+        Loaded +=async (sender, args) =>
+        {
+            await ViewModel.Refresh();
+        };
     }
 
     protected override void OnLoaded(RoutedEventArgs e)
     {
-        if (ViewModel != null)
-        {
-            ViewModel.OnLeftInformationChanged += HandleOnLeftInformationChanged;
-        }
+        ViewModel.OnLeftInformationChanged += HandleOnLeftInformationChanged;
         _timer.Interval = TimeSpan.FromMilliseconds(100);
         _timer.Tick += (sender, args) => { ChangeDescText(); };
         base.OnLoaded(e);
@@ -42,10 +47,7 @@ public partial class LeftNavView : UserComponent<LeftNavViewModel>
     protected override void OnUnloaded(RoutedEventArgs e)
     {
         base.OnUnloaded(e);
-        if (ViewModel != null)
-        {
-            ViewModel.OnLeftInformationChanged -= HandleOnLeftInformationChanged;
-        }
+        ViewModel.OnLeftInformationChanged -= HandleOnLeftInformationChanged;
 
         _timer.Stop();
     }

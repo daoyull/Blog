@@ -8,7 +8,7 @@ using Common.Lib.Exceptions;
 using Common.Lib.Models;
 using Common.Redis;
 using FreeSql.Internal.Model;
-using LanguageExt.Common;
+
 using Mapster;
 using Newtonsoft.Json;
 using StackExchange.Redis;
@@ -23,10 +23,10 @@ public class CategoryServiceImpl : ICategoryService
     public CategoryServiceImpl(FreeSqlResolver resolver, RedisResolver redisResolver)
     {
         _db = resolver.GetDatabase();
-        redisResolver(BlogDbModule.BlogDatabaseName).IfSucc(redis => _redis = redis);
+        _redis = redisResolver(BlogDbModule.BlogDatabaseName);
     }
 
-    public async Task<Result<CategoryVo>> GetAsync(CategoryQueryDto query)
+    public async Task<CategoryVo> GetAsync(CategoryQueryDto query)
     {
         return await _db.Select<CategoryPo>()
             .WhereIf(query.Id != null, it => it.Id == query.Id)
@@ -35,7 +35,7 @@ public class CategoryServiceImpl : ICategoryService
             .MapperTo<CategoryPo, CategoryVo>();
     }
 
-    public async Task<Result<PageResult<CategoryVo>>> GetPageAsync(CategoryPageQueryDto query)
+    public async Task<PageResult<CategoryVo>> GetPageAsync(CategoryPageQueryDto query)
     {
         var pageInfo = query.Adapt<BasePagingInfo>();
         var list = await _db.Select<CategoryPo>()
@@ -47,27 +47,27 @@ public class CategoryServiceImpl : ICategoryService
         return new PageResult<CategoryVo>(pageInfo.Count, list);
     }
 
-    public async Task<Result<int>> AddAsync(CategoryAddDto category)
+    public async Task<int> AddAsync(CategoryAddDto category)
     {
         var any = await _db.Select<CategoryPo>()
             .AnyAsync(it => it.CategoryName == category.CategoryName);
         if (any)
         {
-            return new Result<int>(new BusinessException("分类名称重复"));
+          throw  new BusinessException("分类名称重复");
         }
 
         var po = category.Adapt<CategoryPo>();
         return await _db.Insert(po).ExecuteAffrowsAsync();
     }
 
-    public async Task<Result<int>> EditAsync(CategoryEditDto category)
+    public async Task<int> EditAsync(CategoryEditDto category)
     {
         var any = await _db.Select<CategoryPo>()
             .WhereCascade(it => it.Id != category.Id!.Value)
             .AnyAsync(it => it.CategoryName == category.CategoryName);
         if (any)
         {
-            return new Result<int>(new BusinessException("分类名称重复"));
+            throw new BusinessException("分类名称重复");
         }
 
         var po = category.Adapt<CategoryPo>();
@@ -76,13 +76,13 @@ public class CategoryServiceImpl : ICategoryService
             .ExecuteAffrowsAsync();
     }
 
-    public async Task<Result<int>> DeleteAsync(long id)
+    public async Task<int> DeleteAsync(long id)
     {
         var any = await _db.Select<BlogPo>()
             .AnyAsync(it => it.CategoryId == id);
         if (any)
         {
-            return new Result<int>(new BusinessException("该分类下有博客，不能删除"));
+            throw new BusinessException("该分类下有博客，不能删除");
         }
 
         return await _db.Delete<CategoryPo>()
@@ -90,13 +90,13 @@ public class CategoryServiceImpl : ICategoryService
             .ExecuteAffrowsAsync();
     }
 
-    public async Task<Result<int>> DeleteListAsync(List<long> ids)
+    public async Task<int> DeleteListAsync(List<long> ids)
     {
         var any = await _db.Select<BlogPo>()
             .AnyAsync(it => ids.Contains(it.CategoryId));
         if (any)
         {
-            return new Result<int>(new BusinessException("该分类下有博客，不能删除"));
+            throw new BusinessException("该分类下有博客，不能删除");
         }
 
         return await _db.Delete<CategoryPo>()
@@ -104,7 +104,7 @@ public class CategoryServiceImpl : ICategoryService
             .ExecuteAffrowsAsync();
     }
 
-    public async Task<Result<List<CategoryCacheVo>>> GetCacheListAsync()
+    public async Task<List<CategoryCacheVo>> GetCacheListAsync()
     {
         if (_redis != null)
         {
@@ -129,7 +129,7 @@ public class CategoryServiceImpl : ICategoryService
             .MapperTo<List<CategoryPo>, List<CategoryCacheVo>>();
     }
 
-    public async Task<Result<List<CountChart>>> GetTagBlogNum()
+    public async Task<List<CountChart>> GetTagBlogNum()
     {
         return await _db.Select<CategoryPo, BlogPo>()
             .InnerJoin((cat, blog) => cat.Id == blog.CategoryId)
@@ -142,7 +142,7 @@ public class CategoryServiceImpl : ICategoryService
             });
     }
 
-    public async Task<Result<long>> GetIdByNameAsync(string categoryName)
+    public async Task<long> GetIdByNameAsync(string categoryName)
     {
         var categoryPo = await _db.Select<CategoryPo>()
             .Where(it => it.CategoryName == categoryName)

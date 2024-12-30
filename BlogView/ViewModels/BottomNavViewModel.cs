@@ -1,7 +1,7 @@
 ﻿using Blog.Lib.Entity;
 using Blog.Lib.Service;
 using BlogView.Service;
-using Common.Lib.Plugins;
+
 using Common.Lib.Service;
 using Common.Mvvm.Abstracts;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -29,7 +29,7 @@ public partial class BottomNavViewModel : BaseViewModel,IRefresh
         _logger = logger;
         _configService = configService;
         PageService = pageService;
-        Plugins.Add(new RefreshPlugin());
+        
     }
     
     public  async Task Refresh()

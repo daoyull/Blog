@@ -1,16 +1,19 @@
+using Avalonia.Controls;
 using Avalonia.Interactivity;
 using BlogView.Service;
 using BlogView.ViewModels;
-using Common.Avalonia.Abstracts;
+
 using Common.Lib.Ioc;
 
 namespace BlogView.Views;
 
-public partial class MainView : UserComponent<MainViewModel>
+public partial class MainView : UserControl
 {
+    public MainViewModel ViewModel { get; } = Ioc.Resolve<MainViewModel>();
     public MainView()
     {
         InitializeComponent();
+        DataContext = ViewModel;
     }
 
 

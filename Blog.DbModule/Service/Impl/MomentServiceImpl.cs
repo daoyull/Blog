@@ -4,7 +4,7 @@ using Blog.Lib.Service;
 using Common.FreeSql;
 using Common.Lib.Models;
 using FreeSql.Internal.Model;
-using LanguageExt.Common;
+
 using Mapster;
 using Blog.DbModule.Helper;
 namespace Blog.DbModule.Service.Impl;
@@ -18,7 +18,7 @@ public class MomentServiceImpl : IMomentService
         _db = resolver.GetDatabase();
     }
 
-    public async Task<Result<PageResult<MomentVo>>> GetMomentPageList(MomentPageQueryDto query)
+    public async Task<PageResult<MomentVo>> GetMomentPageList(MomentPageQueryDto query)
     {
         var pagingInfo = query.Adapt<BasePagingInfo>();
         var list = await _db.Select<MomentPo>()
@@ -29,7 +29,7 @@ public class MomentServiceImpl : IMomentService
         return new PageResult<MomentVo>(pagingInfo.Count, list);
     }
 
-    public async Task<Result<bool>> LikeMoment(long id)
+    public async Task<bool> LikeMoment(long id)
     {
         var rows = await _db.Update<MomentPo>()
             .Set(it => new MomentPo()
@@ -41,7 +41,7 @@ public class MomentServiceImpl : IMomentService
         return rows == 1;
     }
 
-    public async Task<Result<bool>> Published(long id, bool published)
+    public async Task<bool> Published(long id, bool published)
     {
         var rows = await _db.Update<MomentPo>()
             .Set(it => it.IsPublished, published)
@@ -50,7 +50,7 @@ public class MomentServiceImpl : IMomentService
         return rows == 1;
     }
 
-    public async Task<Result<MomentVo>> GetAsync(long id)
+    public async Task<MomentVo> GetAsync(long id)
     {
         return await _db.Select<MomentPo>()
             .Where(it => it.Id == id)
@@ -58,7 +58,7 @@ public class MomentServiceImpl : IMomentService
             .MapperTo<MomentPo, MomentVo>();
     }
 
-    public async Task<Result<int>> EditAsync(MomentEditDto moment)
+    public async Task<int> EditAsync(MomentEditDto moment)
     {
         var po = moment.Adapt<MomentPo>();
         var rows = await _db.Update<MomentPo>()
@@ -67,14 +67,14 @@ public class MomentServiceImpl : IMomentService
         return rows;
     }
 
-    public async Task<Result<int>> AddAsync(MomentAddDto moment)
+    public async Task<int> AddAsync(MomentAddDto moment)
     {
         var po = moment.Adapt<MomentPo>();
         return await _db.Insert(po)
             .ExecuteAffrowsAsync();
     }
 
-    public async Task<Result<int>> DeleteAsync(long id)
+    public async Task<int> DeleteAsync(long id)
     {
         return await _db.Delete<MomentPo>()
             .Where(it => it.Id == id)

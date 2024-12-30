@@ -1,7 +1,7 @@
 using AvaloniaBlog.Lib.Models;
 using Blog.Lib.Models;
 using Blog.Lib.Service;
-using Common.Lib.Plugins;
+
 using Common.Lib.Service;
 using Common.Mvvm.Abstracts;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -26,7 +26,7 @@ public partial class MomentsViewModel : BaseViewModel, IRefresh
     public MomentsViewModel(IMomentService momentService)
     {
         _momentService = momentService;
-        Plugins.Add(new RefreshPlugin());
+        
     }
 
     [RelayCommand]

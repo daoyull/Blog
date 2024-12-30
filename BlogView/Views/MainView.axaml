@@ -1,14 +1,14 @@
-<abstracts:UserComponent x:TypeArguments="viewModels:MainViewModel" xmlns="https://github.com/avaloniaui"
-                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                         xmlns:abstracts="clr-namespace:Common.Avalonia.Abstracts;assembly=Common.Avalonia"
-                         xmlns:viewModels="clr-namespace:BlogView.ViewModels"
-                         xmlns:components="clr-namespace:BlogView.Components"
-                         xmlns:views="clr-namespace:BlogView.Views"
-                         xmlns:blogView="clr-namespace:BlogView"
-                         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-                         x:Class="BlogView.Views.MainView">
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                        
+             xmlns:viewModels="clr-namespace:BlogView.ViewModels"
+             xmlns:components="clr-namespace:BlogView.Components"
+             xmlns:views="clr-namespace:BlogView.Views"
+             xmlns:blogView="clr-namespace:BlogView"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="BlogView.Views.MainView">
     <Design.DataContext>
         <viewModels:MainViewModel />
     </Design.DataContext>
@@ -93,4 +93,4 @@
             </Image>
         </Button>
     </Panel>
-</abstracts:UserComponent>
+</UserControl>

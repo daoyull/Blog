@@ -28,9 +28,9 @@ public partial class BlogController : ControllerBase
     [HttpGet("/web/blogs")]
     public async Task<IActionResult> Blogs([FromQuery] BlogPageQueryDto query)
     {
-        var pageResult = await _blogService.GetPageAsync(query);
-        pageResult.IfSucc(it => it.List.ForEach(i => i.Description = Markdown.ToHtml(i.Description ?? "")));
-        return pageResult.HandleResult();
+        var ResultPage = await _blogService.GetPageAsync(query);
+        ResultPage.IfSucc(it => it.List.ForEach(i => i.Description = Markdown.ToHtml(i.Description ?? "")));
+        return ResultPage.HandleResult();
     }
 
     [VisitLog(Behavitor = "文章详情")]
@@ -80,7 +80,7 @@ public partial class BlogController : ControllerBase
             var blog = await _blogService.GetBlogPageByTagId(id, pageNum, pageSize);
             blog.IfSucc(it => it.List.ForEach(i => i.Description = Markdown.ToHtml(i.Description ?? "")));
             return blog.HandleResult();
-        }, exception => Task.FromResult<IActionResult>(Ok(R.Fail(exception.Message))));
+        }, exception => Task.FromIActionResult>(Ok(R.Fail(exception.Message))));
     }
 
     [VisitLog(Behavitor = "归档")]

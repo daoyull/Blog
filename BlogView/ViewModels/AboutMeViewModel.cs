@@ -1,6 +1,4 @@
-using System.Threading.Tasks;
 using Blog.Lib.Service;
-using Common.Lib.Plugins;
 using Common.Lib.Service;
 using Common.Mvvm.Abstracts;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -15,12 +13,11 @@ public partial class AboutMeViewModel : BaseViewModel, IRefresh
     public AboutMeViewModel(IAboutMeService aboutMeService)
     {
         _aboutMeService = aboutMeService;
-        Plugins.Add(new RefreshPlugin());
     }
 
     public async Task Refresh()
     {
         var desc = await _aboutMeService.Desc();
-        desc.Handle(d=>Desc = d);
+        desc.Handle(d => Desc = d);
     }
 }
