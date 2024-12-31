@@ -33,22 +33,19 @@ public partial class ArchiveViewModel : BaseViewModel, IRefresh
     public async Task Refresh()
     {
         Archives = null;
-        var result = await _blogService.QueryArchiveList();
-        result.Handle(list =>
+        var list = await _blogService.QueryArchiveList();
+        foreach (var archive in list)
         {
-            foreach (var archive in list)
-            {
-                archive.Color = RandomColorHelper.GetRandomColorStr();
-            }
+            archive.Color = RandomColorHelper.GetRandomColorStr();
+        }
 
-            SubTitle = $"目前共计{list.SelectMany(it => it.Blogs).Count()}篇文章。继续努力";
-            list.Add(new Archive
-            {
-                Time = "Hello World",
-                Color = "#000000",
-            });
-
-            Archives = list;
+        SubTitle = $"目前共计{list.SelectMany(it => it.Blogs).Count()}篇文章。继续努力";
+        list.Add(new Archive
+        {
+            Time = "Hello World",
+            Color = "#000000",
         });
+
+        Archives = list;
     }
 }

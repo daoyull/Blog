@@ -40,10 +40,8 @@ public partial class RightNavViewModel : BaseViewModel, IRefresh
     {
         Tags = null;
         Blogs = null;
-        var tagResult = await _tagService.GetCacheListAsync();
-        var randomBlogResult = await _blogService.QueryRandomBlogs(5);
-        tagResult.Handle(tags => Tags = tags);
-        randomBlogResult.Handle(randoms => Blogs = randoms);
+        Tags = await _tagService.GetCacheListAsync();
+        Blogs = await _blogService.QueryRandomBlogs(5);
     }
 
     [RelayCommand]

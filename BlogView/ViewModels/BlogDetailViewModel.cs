@@ -28,7 +28,7 @@ public partial class BlogDetailViewModel : BaseViewModel, IRefresh
     public async Task Refresh()
     {
         Model = null;
-        var detailResult = await _blogService.GetBlogContentAsync(BlogId);
-        detailResult.Handle(model => Model = model);
+        var model = await _blogService.GetBlogContentAsync(BlogId);
+        Model = model;
     }
 }

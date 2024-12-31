@@ -17,7 +17,6 @@ public partial class AboutMeViewModel : BaseViewModel, IRefresh
 
     public async Task Refresh()
     {
-        var desc = await _aboutMeService.Desc();
-        desc.Handle(d => Desc = d);
+        Desc = await _aboutMeService.Desc();
     }
 }

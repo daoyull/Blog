@@ -76,16 +76,12 @@ public partial class BlogCardListViewModel : BaseViewModel, IRefresh
         switch (PageType)
         {
             case PageType.Index:
-                var queryCardPageList = await _blogService.QueryCardPageList(new BlogPageQueryDto()
+                pageResult = await _blogService.QueryCardPageList(new BlogPageQueryDto()
                 {
                     PageNum = PageModel.PageNum,
                     PageSize = PageModel.PageSize
                 });
-                queryCardPageList.Handle(re =>
-                {
-                    pageResult = re;
-                    RefreshUi(title, pageResult);
-                });
+                RefreshUi(title, pageResult);
                 break;
             case PageType.Category:
                 if (Id == 0)
@@ -94,18 +90,11 @@ public partial class BlogCardListViewModel : BaseViewModel, IRefresh
                 }
 
 
-                var categoryResult = await _categoryService.GetAsync(new CategoryQueryDto() { Id = Id });
-                categoryResult.Handle(async category =>
-                {
-                    title = $"分类{category.CategoryName}下的文章";
-                    var catResult =
-                        await _blogService.GetBlogPageByCategoryId(Id, PageModel.PageNum, PageModel.PageSize);
-                    catResult.Handle(re =>
-                    {
-                        pageResult = re;
-                        RefreshUi(title, pageResult);
-                    });
-                });
+                var category = await _categoryService.GetAsync(new CategoryQueryDto() { Id = Id });
+                title = $"分类{category.CategoryName}下的文章";
+                pageResult =
+                    await _blogService.GetBlogPageByCategoryId(Id, PageModel.PageNum, PageModel.PageSize);
+                RefreshUi(title, pageResult);
                 break;
             case PageType.Tag:
                 if (Id == 0)
@@ -113,17 +102,11 @@ public partial class BlogCardListViewModel : BaseViewModel, IRefresh
                     throw new BusinessException("标签不能为空");
                 }
 
-                var tagResult = await _tagService.GetAsync(new TagQueryDto() { Id = Id });
-                tagResult.Handle(async tag =>
-                {
-                    title = $"标签{tag.TagName}下的文章";
-                    var tagBlogs = await _blogService.GetBlogPageByTagId(Id, PageModel.PageNum, PageModel.PageSize);
-                    tagBlogs.Handle(re =>
-                    {
-                        pageResult = re;
-                        RefreshUi(title, pageResult);
-                    });
-                });
+                var tag = await _tagService.GetAsync(new TagQueryDto() { Id = Id });
+                title = $"标签{tag.TagName}下的文章";
+                var re = await _blogService.GetBlogPageByTagId(Id, PageModel.PageNum, PageModel.PageSize);
+                pageResult = re;
+                RefreshUi(title, pageResult);
                 break;
         }
     }

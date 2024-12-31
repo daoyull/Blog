@@ -6,7 +6,6 @@
     xmlns:ic="clr-namespace:AvaloniaBlog.Lib.Controls;assembly=AvaloniaBlog.Lib"
     xmlns:viewModels="clr-namespace:BlogView.ViewModels"
     xmlns:entity="clr-namespace:Blog.Lib.Entity;assembly=Blog.Lib"
-    xmlns:themes="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
     mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="600"
     x:Class="BlogView.Components.LeftNavView"
     x:DataType="viewModels:LeftNavViewModel">
@@ -91,22 +90,22 @@
                     </WrapPanel>
                 </Border>
                 <Border Height="1" Background="#f0f0f0"></Border>
-                <ItemsControl ItemsSource="{Binding Info.Favorites}">
-                    <ItemsControl.Styles>
-                        <themes:MaterialTheme BaseTheme="Dark" PrimaryColor="Purple" SecondaryColor="Lime" />
-                    </ItemsControl.Styles>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="entity:Favorite">
-                            <Expander
-                                Classes="UserInfoExpander"
-                                Header="{Binding Title}">
-                                <TextBlock Text="{Binding Content}" FontSize="15" Margin="10 5 10 5"
-                                           TextWrapping="Wrap">
-                                </TextBlock>
-                            </Expander>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <!-- <ItemsControl ItemsSource="{Binding Info.Favorites}"> -->
+                <!--     <ItemsControl.Styles> -->
+                <!--         <themes:MaterialTheme BaseTheme="Dark" PrimaryColor="Purple" SecondaryColor="Lime" /> -->
+                <!--     </ItemsControl.Styles> -->
+                <!--     <ItemsControl.ItemTemplate> -->
+                <!--         <DataTemplate x:DataType="entity:Favorite"> -->
+                <!--             <Expander -->
+                <!--                 Classes="UserInfoExpander" -->
+                <!--                 Header="{Binding Title}"> -->
+                <!--                 <TextBlock Text="{Binding Content}" FontSize="15" Margin="10 5 10 5" -->
+                <!--                            TextWrapping="Wrap"> -->
+                <!--                 </TextBlock> -->
+                <!--             </Expander> -->
+                <!--         </DataTemplate> -->
+                <!--     </ItemsControl.ItemTemplate> -->
+                <!-- </ItemsControl> -->
             </StackPanel>
         </Border>
     </StackPanel>

@@ -40,13 +40,10 @@ public partial class MomentsViewModel : BaseViewModel, IRefresh
     {
         Source = null;
         var queryDto = PageModel.Adapt<MomentPageQueryDto>();
-        var listFrontResult = await _momentService.GetMomentPageList(queryDto);
-        listFrontResult.Handle(page =>
-        {
-            PageIsShow = page.Total > PageModel.PageSize;
+        var page = await _momentService.GetMomentPageList(queryDto);
+        PageIsShow = page.Total > PageModel.PageSize;
 
-            Source = page.List;
-            PageModel.Total = page.Total;
-        });
+        Source = page.List;
+        PageModel.Total = page.Total;
     }
 }

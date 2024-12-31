@@ -50,11 +50,9 @@ public partial class BottomNavViewModel : BaseViewModel,IRefresh
         }
         NewBlogs = null;
         Badges = null;
-        var newBlogResult = await _blogService.QueryNewBlog(3);
-        var badgeResult = await _configService.GetJsonConfig<List<Badge>>("badges");
+        NewBlogs = await _blogService.QueryNewBlog(3);
+        Badges = await _configService.GetJsonConfig<List<Badge>>("badges");
         
-        newBlogResult.Handle(re=>NewBlogs=re);
-        badgeResult.Handle(badges=>Badges=badges);
         
     }
 }

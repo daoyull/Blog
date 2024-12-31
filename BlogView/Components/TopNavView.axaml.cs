@@ -11,10 +11,8 @@ public partial class TopNavView : UserControl
     public TopNavView()
     {
         InitializeComponent();
-        Loaded +=async (sender, args) =>
-        {
-            await ViewModel.Refresh();
-        };
+        DataContext = ViewModel;
+        Loaded += async (sender, args) => { await ViewModel.Refresh(); };
     }
 
     public TopNavViewModel ViewModel { get; } = Ioc.Resolve<TopNavViewModel>();

@@ -7,17 +7,17 @@
         </Border>
     </Design.PreviewWith>
 
-    <Style Selector="u|PaginationButton">
-        <Setter Property="Background" Value="White" />
-        <Setter Property="Margin" Value="3 0 3 0" />
-        <Style Selector="^:pointerover">
-            <Style Selector="^ /template/ContentPresenter PathIcon Border Viewbox /template/ Path">
-                <Setter Property="Fill" Value="#409EFF"></Setter>
-            </Style>
-            <Style Selector="^ /template/ContentPresenter TextBlock">
-                <Setter Property="Foreground" Value="#409EFF" />
-            </Style>
-        </Style>
-
-    </Style>
+    <!-- <Style Selector="u|PaginationButton"> -->
+    <!--     <Setter Property="Background" Value="White" /> -->
+    <!--     <Setter Property="Margin" Value="3 0 3 0" /> -->
+    <!--     <Style Selector="^:pointerover"> -->
+    <!--         <Style Selector="^ /template/ContentPresenter PathIcon Border Viewbox /template/ Path"> -->
+    <!--             <Setter Property="Fill" Value="#409EFF"></Setter> -->
+    <!--         </Style> -->
+    <!--         <Style Selector="^ /template/ContentPresenter TextBlock"> -->
+    <!--             <Setter Property="Foreground" Value="#409EFF" /> -->
+    <!--         </Style> -->
+    <!--     </Style> -->
+    <!-- -->
+    <!-- </Style> -->
 </Styles>

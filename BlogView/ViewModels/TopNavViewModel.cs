@@ -28,9 +28,8 @@ public partial class TopNavViewModel : BaseViewModel, IRefresh
 
     public async Task Refresh()
     {
-        var categoryRes = await _categoryService.GetCacheListAsync();
         Source = null;
-        categoryRes.Handle(cats => Source = cats);
+        Source = await _categoryService.GetCacheListAsync();
     }
 
     [RelayCommand]

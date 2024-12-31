@@ -37,18 +37,18 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <u:Pagination
-            IsVisible="{Binding PageIsShow}"
-            Margin="0 0 0 30" HorizontalAlignment="Center" Grid.Row="2"
-            TotalCount="{Binding PageModel.Total}"
-            PageSize="{Binding PageModel.PageSize}"
-            CurrentPage="{Binding PageModel.PageNum}"
-            Command="{Binding PageChangedCommand}"
-            CommandParameter="{Binding $self.CurrentPage}">
-            <u:Pagination.Styles>
-                <u-semi:SemiTheme Locale="zh-CN" />
-                <StyleInclude Source="avares://Semi.Avalonia/Themes/Index.axaml" />
-            </u:Pagination.Styles>
-        </u:Pagination>
+        <!-- <u:Pagination -->
+        <!--     IsVisible="{Binding PageIsShow}" -->
+        <!--     Margin="0 0 0 30" HorizontalAlignment="Center" Grid.Row="2" -->
+        <!--     TotalCount="{Binding PageModel.Total}" -->
+        <!--     PageSize="{Binding PageModel.PageSize}" -->
+        <!--     CurrentPage="{Binding PageModel.PageNum}" -->
+        <!--     Command="{Binding PageChangedCommand}" -->
+        <!--     CommandParameter="{Binding $self.CurrentPage}"> -->
+        <!--     <u:Pagination.Styles> -->
+        <!--         <u-semi:SemiTheme Locale="zh-CN" /> -->
+        <!--         <StyleInclude Source="avares://Semi.Avalonia/Themes/Index.axaml" /> -->
+        <!--     </u:Pagination.Styles> -->
+        <!-- </u:Pagination> -->
     </Grid>
 </UserControl>

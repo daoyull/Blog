@@ -23,11 +23,8 @@ public partial class LeftNavViewModel : BaseViewModel, IRefresh
 
     public async Task Refresh()
     {
-        var leftInformation = await _informationService.GetLeftInformation();
-        leftInformation.Handle(info =>
-        {
-            Info = info;
-            OnLeftInformationChanged?.Invoke(info);
-        });
+        var info = await _informationService.GetLeftInformation();
+        Info = info;
+        OnLeftInformationChanged?.Invoke(info);
     }
 }

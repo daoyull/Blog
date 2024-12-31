@@ -49,8 +49,6 @@
             <TreeView x:Name="MainTreeView" SelectionMode="Single" Classes="RouterTreeView"
                       x:DataType="components:RouterItem" Margin="0 10 0 0">
                 <TreeView.Styles>
-                    <semi:SemiTheme Locale="zh-CN" />
-                    <StyleInclude Source="avares://Semi.Avalonia/Themes/Index.axaml" />
                     <Style Selector="TreeViewItem">
                         <Setter Property="IsExpanded" Value="{Binding (components:RouterItem).IsExpand}" />
                     </Style>

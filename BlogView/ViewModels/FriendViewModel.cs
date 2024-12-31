@@ -25,15 +25,12 @@ public partial class FriendViewModel : BaseViewModel, IRefresh
     public async Task Refresh()
     {
         Source = null;
-        var friendResult = await _friendService.GetFriendVoList(10);
-        friendResult.Handle(list =>
-        {
-            list.ForEach(it => it.Color = RandomColorHelper.GetRandomColorStr());
-            Source = list;
-        });
+        var list = await _friendService.GetFriendVoList(10);
+         list.ForEach(it => it.Color = RandomColorHelper.GetRandomColorStr());
+        Source = list;
 
 
-        var descRes = await _friendService.GetDesc();
-        descRes.Handle(desc => Desc = desc.Content);
+        var desc = await _friendService.GetDesc();
+        Desc = desc.Content;
     }
 }
